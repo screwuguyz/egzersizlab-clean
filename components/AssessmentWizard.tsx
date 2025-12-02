@@ -133,9 +133,10 @@ const bodyPartsBack: BodyPart[] = [
 interface AssessmentWizardProps {
   open: boolean;
   onClose: () => void;
+  onComplete?: () => void;
 }
 
-const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose }) => {
+const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onComplete }) => {
   const [step, setStep] = useState<StepKey>(1);
   const [gender, setGender] = useState<string | null>(null);
   const [age, setAge] = useState<number | null>(null);
@@ -260,6 +261,7 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose }) =>
     if (step < 5) {
       setStep((s) => (s + 1) as StepKey);
     } else {
+      if (onComplete) onComplete();
       onClose();
     }
   };

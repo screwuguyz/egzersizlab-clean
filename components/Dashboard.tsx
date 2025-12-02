@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import AssessmentWizard from './AssessmentWizard';
+import AnalysisSummary from './AnalysisSummary';
 
 type DashboardConfig = {
   user_name: string;
@@ -41,6 +42,7 @@ const Dashboard: React.FC = () => {
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [showWizard, setShowWizard] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   // Hook up to an optional external SDK if it exists (keeps provided markup behavior).
   useEffect(() => {
@@ -539,7 +541,14 @@ const Dashboard: React.FC = () => {
           {toast}
         </div>
       )}
-      <AssessmentWizard open={showWizard} onClose={() => setShowWizard(false)} />
+      <AssessmentWizard
+        open={showWizard}
+        onClose={() => setShowWizard(false)}
+        onComplete={() => {
+          setShowSummary(true);
+        }}
+      />
+      <AnalysisSummary open={showSummary} onClose={() => setShowSummary(false)} />
     </div>
   );
 };
