@@ -38,6 +38,7 @@ const defaultConfig: DashboardConfig = {
 };
 
 const Dashboard: React.FC = () => {
+  const [hasPackage, setHasPackage] = useState(true); // TODO: gerçek duruma göre ayarla
   const [config, setConfig] = useState<DashboardConfig>(defaultConfig);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -164,32 +165,32 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard-wrapper" style={{ minHeight: '100vh', background: gradientBackground }}>
       <style>{`
-        body { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; }
         * { box-sizing: inherit; }
         .dashboard-wrapper { display: flex; height: 100%; width: 100%; position: relative; }
-        .sidebar { width: 260px; background: #fff; box-shadow: 2px 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 100%; }
-        .sidebar-header { padding: 24px; border-bottom: 1px solid #e5e7eb; }
-        .logo { display: flex; align-items: center; gap: 12px; }
-        .logo-progress { width: 100%; height: 3px; background: #e5e7eb; border-radius: 999px; margin-top: 10px; overflow: hidden; }
+        .sidebar { width: 230px; background: #fff; box-shadow: 2px 0 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 100vh; position: sticky; top: 0; }
+        .sidebar-header { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; }
+        .logo { display: flex; align-items: center; justify-content: center; }
+        .logo-progress { width: 100%; height: 4px; background: linear-gradient(90deg, #ffffff 0%, #c7d2fe 50%, #667eea 100%); border-radius: 999px; margin-top: 14px; overflow: hidden; }
         .logo-progress-inner { height: 100%; background: linear-gradient(90deg, #667eea, #22c55e); transition: width 0.15s ease-out; }
-        .menu-items { flex: 1; padding: 16px 0; overflow-y: auto; }
-        .menu-section-title { padding: 20px 24px 8px 24px; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #9ca3af; text-transform: uppercase; }
-        .menu-divider { height: 1px; background: #e5e7eb; margin: 12px 16px; }
-        .menu-item { display: flex; align-items: center; padding: 14px 24px; color: #4b5563; cursor: pointer; transition: all 0.2s; font-size: 15px; gap: 12px; }
+        .menu-items { flex: 1; padding: 10px 0; overflow-y: visible; }
+        .menu-section-title { padding: 12px 16px 6px 16px; font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #6b7280; text-transform: uppercase; }
+        .menu-divider { height: 1px; background: #e5e7eb; margin: 8px 14px; }
+        .menu-item { display: flex; align-items: center; padding: 10px 16px; color: #111827; cursor: pointer; transition: all 0.2s; font-size: 16px; gap: 12px; }
         .menu-item:hover { background: #f3f4f6; color: #667eea; }
         .menu-item.active { background: #eef2ff; color: #667eea; border-right: 3px solid #667eea; }
         .menu-item.locked { opacity: 0.55; cursor: not-allowed; }
         .menu-item.premium-feature { position: relative; }
         .menu-item.premium-feature::after { content: 'PREMIUM'; position: absolute; right: 50px; font-size: 9px; font-weight: 700; color: #f59e0b; background: #fef3c7; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
-        .main-content { flex: 1; overflow-y: auto; height: 100%; }
-        .top-bar { background: #fff; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; }
-        .welcome-text h1 { font-size: 28px; font-weight: 600; color: ${config.text_color}; margin: 0 0 4px 0; }
-        .welcome-text p { font-size: 15px; color: #6b7280; margin: 0; }
+        .main-content { flex: 1; min-height: 100vh; overflow-y: auto; }
+        .top-bar { background: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative; gap: 12px; }
+        .welcome-text h1 { font-size: 28px; font-weight: 700; color: ${config.text_color}; margin: 0 0 6px 0; }
+        .welcome-text p { font-size: 16px; color: #4a4a4a; margin: 0; font-weight: 500; }
         .top-bar-right { display: flex; align-items: center; gap: 20px; position: relative; }
         .notification-bell { width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 18px; }
         .notification-bell:hover { background: #e5e7eb; }
         .profile-pic { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 16px; cursor: pointer; position: relative; }
-        .content-area { padding: 32px; max-width: 1200px; margin: 0 auto; }
+        .content-area { padding: 24px; max-width: 1100px; margin: 0 auto; }
         .main-cta-card { background: ${config.card_background}; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 32px; display: flex; gap: 32px; align-items: center; }
         .cta-illustration { width: 180px; height: 180px; flex-shrink: 0; }
         .cta-content h2 { font-size: 26px; font-weight: 600; color: ${config.text_color}; margin: 0 0 12px 0; }
@@ -205,12 +206,14 @@ const Dashboard: React.FC = () => {
         .tip-card .info-card-icon { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .info-card h3 { font-size: 18px; font-weight: 600; color: #1f2937; margin: 0 0 8px 0; }
         .info-card p { font-size: 14px; color: #6b7280; line-height: 1.6; margin: 0; }
-        .profile-dropdown { position: absolute; top: 70px; right: 32px; width: 320px; background: #fff; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.25s ease; z-index: 1000; border: 1px solid #e5e7eb; }
+        .profile-dropdown { position: absolute; top: 70px; right: 0; width: 320px; background: #fff; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.25s ease; z-index: 1000; border: 1px solid #e5e7eb; max-height: 80vh; overflow-y: auto; }
         .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
         .profile-card-header { padding: 20px; border-bottom: 1px solid #e5e7eb; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px 16px 0 0; color: #fff; }
         .profile-avatar-large { width: 70px; height: 70px; border-radius: 50%; background: #fff; color: #667eea; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; margin: 0 auto 10px auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
         .profile-name { font-size: 18px; font-weight: 700; margin: 0 0 4px 0; }
-        .premium-badge-inline { display: inline-flex; align-items: center; gap: 6px; background: rgba(251, 191, 36, 0.18); color: #b45309; padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; border: 1px solid rgba(251, 191, 36, 0.35); }
+        .premium-badge-inline { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%); color: #fff; padding: 8px 14px; border-radius: 18px; font-size: 13px; font-weight: 800; border: 2px solid #fb923c; min-width: 140px; justify-content: center; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35); }
+        .premium-badge-blur { filter: blur(1px); opacity: 0.6; position: relative; }
+        .premium-badge-blur::after { content: '🔒'; position: absolute; right: -18px; top: 50%; transform: translateY(-50%); font-size: 16px; }
         .profile-menu-section { padding: 14px 0; }
         .profile-menu-section:not(:last-child) { border-bottom: 1px solid #f3f4f6; }
         .profile-section-title { padding: 8px 16px; font-size: 11px; font-weight: 700; color: #9ca3af; letter-spacing: 1px; text-transform: uppercase; }
@@ -221,7 +224,7 @@ const Dashboard: React.FC = () => {
         .profile-menu-text { flex: 1; }
         .profile-menu-text .subtitle { font-size: 11px; color: #9ca3af; margin-top: 2px; }
         @media (max-width: 768px) {
-          .sidebar { position: fixed; left: -260px; z-index: 100; transition: left 0.3s; }
+          .sidebar { position: fixed; left: -230px; z-index: 100; transition: left 0.3s; height: 100vh; }
           .sidebar.open { left: 0; }
           .main-cta-card { flex-direction: column; text-align: center; }
           .cta-illustration { width: 140px; height: 140px; }
@@ -231,13 +234,19 @@ const Dashboard: React.FC = () => {
 
       <div className="sidebar">
         <div className="sidebar-header">
-          <div className="logo">
+          <div className="logo" style={{ justifyContent: 'center' }}>
             <img
               src="/logo.png"
               alt="EgzersizLab Logo"
-              style={{ width: 72, height: 72, objectFit: 'contain' }}
+              style={{
+                width: 150,
+                height: 150,
+                objectFit: 'contain',
+                borderRadius: '50%',
+                border: '3px solid #e0e7ff',
+                boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+              }}
             />
-            <span style={{ fontSize: 22, fontWeight: 'bold', color: '#1e40af' }}>EgzersizLab</span>
           </div>
           <div className="logo-progress">
             <div className="logo-progress-inner" style={{ width: `${scrollProgress}%` }} />
@@ -315,7 +324,9 @@ const Dashboard: React.FC = () => {
               <div className="profile-card-header">
                 <div className="profile-avatar-large">{config.user_name?.charAt(0).toUpperCase()}</div>
                 <div className="profile-name">{config.user_name}</div>
-                <span className="premium-badge-inline">⭐ Premium Üye</span>
+                <span className={`premium-badge-inline ${hasPackage ? '' : 'premium-badge-blur'}`}>
+                  ⭐ {hasPackage ? 'Premium Üye' : 'Premium kilitli'}
+                </span>
               </div>
               <div className="profile-menu-section">
                 <div className="profile-section-title">Kişisel Sağlık Verileri</div>

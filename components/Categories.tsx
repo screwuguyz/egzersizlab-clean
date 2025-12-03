@@ -4,41 +4,46 @@ import { Check, X } from 'lucide-react';
 const packages = [
   {
     id: 'basic',
-    title: 'Temel Analiz & Egzersiz Planı',
-    tagline: 'Vücudunuzun neye ihtiyacı olduğunu öğrenin ve hemen başlayın.',
+    badge: 'Basit',
+    price: '₺499',
+    title: 'Temel Analiz',
+    tagline: 'Temel fiziksel değerlendirme ile hızlı başlangıç.',
     features: [
-      'Detaylı anamnez değerlendirmesi',
-      'Fizyoterapist tarafından vaka analizi',
-      '4-6 haftalık kişiye özel egzersiz reçetesi',
-      'Egzersiz videoları ve açıklamaları',
+      'Temel fiziksel değerlendirme',
+      'Ağrı haritası analizi',
+      'Genel egzersiz önerileri',
+      'Email desteği',
     ],
-    note: 'Takip ve revizyon hizmeti içermez',
     recommended: false,
   },
   {
     id: 'recommended',
-    title: 'Klinik Takip & İlerleme Paketi',
-    tagline: 'Sadece bir liste değil, dinamik bir iyileşme süreci.',
+    badge: 'Orta',
+    price: '₺999',
+    title: 'Detaylı Analiz',
+    tagline: 'Kişiselleştirilmiş program ve canlı destek.',
     features: [
-      'Temel paketteki tüm hizmetler',
-      'Haftalık kontrol ve değerlendirme',
-      'Ağrı ve gelişime göre program revizyonu',
-      'Sistem üzerinden soru-cevap hakkı',
-      '1 aylık aktif takip',
+      'Kapsamlı fiziksel değerlendirme',
+      'Detaylı ağrı haritası analizi',
+      'Kişiselleştirilmiş egzersiz programı',
+      'Video konsültasyon (30 dk)',
+      'WhatsApp desteği',
     ],
     recommended: true,
-    badge: 'Fizyoterapist önerisi',
   },
   {
     id: 'premium',
-    title: 'Premium Danışmanlık & Video Analizi',
-    tagline: 'Fizyoterapistiniz cebinizde - yanlış yapma riskini sıfıra indirin.',
+    badge: 'Premium',
+    price: '₺1,999',
+    title: 'Premium Analiz',
+    tagline: 'AI destekli analiz ve öncelikli randevu.',
     features: [
-      'Tüm paketlerdeki hizmetler',
-      'Video analizi: Egzersizlerinizi kaydedin, geri bildirim alın',
-      'Hızlı destek (chat/WhatsApp)',
-      'Öncelikli değerlendirme (aynı gün dönüş)',
-      'Sınırsız program güncellemesi',
+      'AI destekli ağrı analizi',
+      'Özel egzersiz programı + video rehber',
+      'Video konsültasyon (60 dk)',
+      '4 hafta takip ve destek',
+      '7/24 WhatsApp desteği',
+      'Öncelikli randevu',
     ],
     recommended: false,
   },
@@ -69,40 +74,45 @@ const Categories = () => {
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className={`relative bg-white/90 border rounded-2xl p-8 shadow-lg backdrop-blur card-shadow ${
-                pkg.recommended ? 'border-blue-200 ring-2 ring-blue-200/70' : 'border-gray-100'
+              className={`relative rounded-2xl p-6 shadow-lg border-2 transition transform hover:-translate-y-1 ${
+                pkg.id === 'basic'
+                  ? 'bg-gradient-to-br from-gray-50 to-gray-200 border-gray-200'
+                  : pkg.id === 'recommended'
+                  ? 'bg-gradient-to-br from-sky-50 to-blue-100 border-blue-200'
+                  : 'bg-gradient-to-br from-amber-50 to-orange-100 border-orange-200'
               }`}
             >
-              {pkg.recommended && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-teal-500 text-white text-xs font-semibold shadow-md">
+              <div className="flex items-center justify-between mb-2">
+                <span
+                  className={`px-3 py-1 text-xs font-bold rounded-full uppercase ${
+                    pkg.id === 'basic'
+                      ? 'bg-gray-700 text-white'
+                      : pkg.id === 'recommended'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-orange-500 text-white'
+                  }`}
+                >
                   {pkg.badge}
-                </div>
-              )}
+                </span>
+                <span className="text-xl font-extrabold text-indigo-700">{pkg.price}</span>
+              </div>
 
               <h3 className="text-2xl font-bold text-slate-900 mb-2">{pkg.title}</h3>
               <p className="text-slate-600 text-sm mb-6">{pkg.tagline}</p>
 
-              <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-                Paket içeriği
-              </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2 text-sm">
                 {pkg.features.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-slate-700 leading-relaxed">
-                    <span className="check-icon inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-600">
-                      <Check size={14} />
+                  <li key={idx} className="flex items-center gap-2 text-slate-700 leading-relaxed">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600">
+                      <Check size={12} />
                     </span>
-                    <span>{item}</span>
+                    {item}
                   </li>
                 ))}
-                {pkg.note && (
-                  <li className="flex items-start gap-3 text-slate-500 italic">
-                    <span className="cross-icon inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-100 text-rose-500">
-                      <X size={14} />
-                    </span>
-                    <span>{pkg.note}</span>
-                  </li>
-                )}
               </ul>
+              <button className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow-md transition">
+                Sepete Ekle
+              </button>
             </div>
           ))}
         </div>
