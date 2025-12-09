@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
+import { apiService } from '../services/apiService';
+import VerificationModal from './VerificationModal';
 
 interface RegistrationModalProps {
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
+const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose, onSuccess }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showVerification, setShowVerification] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+  });
 
   const heroBackgroundStyle = {
     backgroundImage:
@@ -105,7 +117,53 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
               <h2 className="text-2xl font-bold text-gray-800 mb-1">Hesap Oluştur</h2>
               <p className="text-gray-600 text-sm">Sağlıklı yaşam yolculuğunuza başlayın</p>
             </div>
-            <form className="space-y-4">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {error}
+              </div>
+            )}
+            <form
+              className="space-y-4"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setError(null);
+                setLoading(true);
+
+                try {
+                  // Şifre validasyonu (backend'de de kontrol ediliyor ama frontend'de de kontrol edelim)
+                  if (formData.password.length < 8) {
+                    setError('Şifre en az 8 karakter olmalıdır');
+                    setLoading(false);
+                    return;
+                  }
+
+                  if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+                    setError('Şifre en az bir küçük harf, bir büyük harf ve bir rakam içermelidir');
+                    setLoading(false);
+                    return;
+                  }
+
+                  // Aktivasyon kodu gönder
+                  const response = await apiService.sendVerificationCode(
+                    formData.email,
+                    formData.password,
+                    formData.name,
+                    formData.phone
+                  );
+
+                  if (response.success) {
+                    // Aktivasyon modalını aç
+                    setShowVerification(true);
+                  } else {
+                    setError(response.error || 'Kod gönderilemedi. Lütfen tekrar deneyin.');
+                  }
+                } catch (err: any) {
+                  setError(err.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+                } finally {
+                  setLoading(false);
+                }
+              }}
+            >
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Ad Soyad <span className="text-red-500">*</span>
@@ -113,6 +171,8 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
                 <input
                   type="text"
                   required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                   placeholder="Adınız ve Soyadınız"
                 />
@@ -124,17 +184,20 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
                 <input
                   type="email"
                   required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                   placeholder="ornek@email.com"
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Telefon <span className="text-red-500">*</span>
+                  Telefon
                 </label>
                 <input
                   type="tel"
-                  required
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                   placeholder="0555 555 55 55"
                 />
@@ -147,8 +210,10 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
-                    placeholder="En az 6 karakter"
+                    placeholder="En az 8 karakter (büyük/küçük harf + rakam)"
                   />
                   <button
                     type="button"
@@ -158,6 +223,9 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
                     {showPassword ? 'Gizle' : 'Göster'}
                   </button>
                 </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  En az 8 karakter, bir büyük harf, bir küçük harf ve bir rakam içermelidir
+                </p>
               </div>
               <div className="pt-2">
                 <label className="flex items-start gap-3 cursor-pointer">
@@ -171,9 +239,10 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
               </div>
               <button
                 type="submit"
-                className="registration-submit w-full py-3 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 mt-4"
+                disabled={loading}
+                className="registration-submit w-full py-3 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Hesabımı Oluştur ve Değerlendirmeye Başla
+                {loading ? 'Kayıt yapılıyor...' : 'Hesabımı Oluştur ve Değerlendirmeye Başla'}
               </button>
             </form>
             <div className="mt-5 text-center text-sm text-gray-600">
@@ -185,6 +254,28 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* Aktivasyon Modalı */}
+      {showVerification && (
+        <VerificationModal
+          email={formData.email}
+          name={formData.name}
+          password={formData.password}
+          phone={formData.phone}
+          onClose={() => {
+            setShowVerification(false);
+            onClose();
+          }}
+          onSuccess={() => {
+            if (onSuccess) {
+              onSuccess();
+            } else {
+              // Dashboard'a yönlendir
+              window.location.href = '/#dashboard';
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

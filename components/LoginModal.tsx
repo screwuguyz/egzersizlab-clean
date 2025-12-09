@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
+import { apiService } from '../services/apiService';
 
 interface LoginModalProps {
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
   const heroBackgroundStyle = {
     backgroundImage:
@@ -97,11 +105,37 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
               <h2 className="text-3xl font-bold text-gray-800 mb-2">Hesabınıza Giriş Yapın</h2>
               <p className="text-gray-600 text-sm">Sağlık yolculuğunuza devam edin</p>
             </div>
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {error}
+              </div>
+            )}
             <form
               className="space-y-5"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                window.location.href = '/dashboard';
+                setError(null);
+                setLoading(true);
+
+                try {
+                  const response = await apiService.login(formData.email, formData.password);
+
+                  if (response.success) {
+                    onClose();
+                    if (onSuccess) {
+                      onSuccess();
+                    } else {
+                      // Dashboard'a yönlendir
+                      window.location.href = '/#dashboard';
+                    }
+                  } else {
+                    setError(response.error || 'Giriş başarısız. E-posta veya şifrenizi kontrol edin.');
+                  }
+                } catch (err: any) {
+                  setError(err.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
               <div>
@@ -111,6 +145,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
                 <input
                   type="email"
                   required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                   placeholder="ornek@email.com"
                 />
@@ -123,6 +159,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="input-field w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                     placeholder="••••••••"
                   />
@@ -147,9 +185,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
               </div>
               <button
                 type="submit"
-                className="login-submit w-full py-4 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 mt-6"
+                disabled={loading}
+                className="login-submit w-full py-4 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Giriş Yap
+                {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
               </button>
               <div className="mt-5 text-center text-sm text-gray-600">
                 Henüz hesabınız yok mu?{' '}
