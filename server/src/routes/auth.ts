@@ -2,10 +2,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 import { User } from '../models/User.js';
 import { VerificationCode } from '../models/VerificationCode.js';
+import { PasswordResetCode } from '../models/PasswordResetCode.js';
 import { generateToken, protect, AuthRequest } from '../middleware/auth.js';
 import { CustomError } from '../middleware/errorHandler.js';
 import { authLimiter } from '../config/security.js';
-import { sendVerificationCode } from '../services/emailService.js';
+import { sendVerificationCode, sendPasswordResetCode } from '../services/emailService.js';
 
 const router = express.Router();
 
@@ -259,6 +260,146 @@ router.get('/me', protect, async (req: AuthRequest, res: Response, next: NextFun
     next(error);
   }
 });
+
+/**
+ * Şifre Sıfırlama - Kod Gönder
+ */
+router.post(
+  '/forgot-password',
+  authLimiter,
+  [
+    body('email')
+      .isEmail()
+      .withMessage('Geçerli bir e-posta adresi giriniz')
+      .normalizeEmail(),
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          errors: errors.array(),
+        });
+      }
+
+      const { email } = req.body;
+
+      // Kullanıcı var mı kontrol et
+      const user = await User.findOne({ email });
+      if (!user) {
+        // Güvenlik: Kullanıcı yoksa da aynı mesajı döndür (email enumeration koruması)
+        return res.json({
+          success: true,
+          message: 'Eğer bu e-posta adresine kayıtlı bir hesap varsa, şifre sıfırlama kodu gönderildi',
+        });
+      }
+
+      // 4 haneli kod oluştur
+      const code = generateVerificationCode();
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 dakika
+
+      // Eski kodları sil (aynı email için)
+      await PasswordResetCode.deleteMany({ email, used: false });
+
+      // Yeni kod kaydet
+      await PasswordResetCode.create({
+        email,
+        code,
+        expiresAt,
+        used: false,
+      });
+
+      // Email gönder
+      try {
+        await sendPasswordResetCode(email, code, user.name);
+      } catch (emailError) {
+        console.error('Email gönderme hatası:', emailError);
+        // Email gönderilemese bile devam et (development için)
+      }
+
+      res.json({
+        success: true,
+        message: 'Eğer bu e-posta adresine kayıtlı bir hesap varsa, şifre sıfırlama kodu gönderildi',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * Şifre Sıfırlama - Kodu Doğrula ve Şifreyi Güncelle
+ */
+router.post(
+  '/reset-password',
+  authLimiter,
+  [
+    body('email').isEmail().withMessage('Geçerli bir e-posta adresi giriniz').normalizeEmail(),
+    body('code')
+      .isLength({ min: 4, max: 4 })
+      .withMessage('Kod 4 haneli olmalıdır')
+      .matches(/^\d{4}$/)
+      .withMessage('Kod sadece rakamlardan oluşmalıdır'),
+    body('newPassword')
+      .isLength({ min: 8 })
+      .withMessage('Şifre en az 8 karakter olmalıdır')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+      .withMessage('Şifre en az bir küçük harf, bir büyük harf ve bir rakam içermelidir'),
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          errors: errors.array(),
+        });
+      }
+
+      const { email, code, newPassword } = req.body;
+
+      // Kodu kontrol et
+      const resetCode = await PasswordResetCode.findOne({
+        email,
+        code,
+        used: false,
+        expiresAt: { $gt: new Date() }, // Süresi dolmamış
+      });
+
+      if (!resetCode) {
+        return res.status(400).json({
+          success: false,
+          error: 'Geçersiz veya süresi dolmuş şifre sıfırlama kodu',
+        });
+      }
+
+      // Kullanıcıyı bul
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          error: 'Kullanıcı bulunamadı',
+        });
+      }
+
+      // Şifreyi güncelle
+      user.password = newPassword;
+      await user.save();
+
+      // Kodu işaretle (used = true)
+      resetCode.used = true;
+      await resetCode.save();
+
+      res.json({
+        success: true,
+        message: 'Şifreniz başarıyla güncellendi. Lütfen yeni şifrenizle giriş yapın.',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default router;
 

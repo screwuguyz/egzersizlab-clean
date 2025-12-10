@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/apiService';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 interface LoginModalProps {
   onClose: () => void;
@@ -10,6 +11,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -179,9 +181,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess }) => {
                   <input type="checkbox" className="checkbox-custom" />
                   <span className="text-sm text-gray-700">Beni Hatırla</span>
                 </label>
-                <a href="#" className="text-sm text-blue-600 font-semibold hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setShowForgotPassword(true)}
+                  className="text-sm text-blue-600 font-semibold hover:underline"
+                >
                   Şifremi Unuttum
-                </a>
+                </button>
               </div>
               <button
                 type="submit"
@@ -200,6 +206,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onSuccess }) => {
           </div>
         </div>
       </div>
+      {showForgotPassword && (
+        <ForgotPasswordModal
+          onClose={() => {
+            setShowForgotPassword(false);
+            onClose();
+          }}
+        />
+      )}
     </div>
   );
 };

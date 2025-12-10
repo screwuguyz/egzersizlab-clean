@@ -139,6 +139,22 @@ class ApiService {
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  // Şifre Sıfırlama - Kod gönder
+  async sendPasswordResetCode(email: string) {
+    return this.request('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  // Şifre Sıfırlama - Kodu doğrula ve şifreyi güncelle
+  async resetPassword(email: string, code: string, newPassword: string) {
+    return this.request('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+  }
 }
 
 export const apiService = new ApiService();

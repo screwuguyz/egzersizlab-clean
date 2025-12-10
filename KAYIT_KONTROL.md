@@ -56,3 +56,4 @@ Kayıt sonrası otomatik olarak Dashboard'a (`/#dashboard`) yönlendirilmiş olm
 - Tarayıcı URL'ini kontrol edin
 - Manuel olarak `/#dashboard` adresine gidin
 
+

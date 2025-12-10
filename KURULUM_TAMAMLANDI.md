@@ -135,3 +135,4 @@ Backend başladığında şunu görmelisiniz:
 
 Her şey hazır! MongoDB'yi kurduktan sonra sistemi kullanmaya başlayabilirsiniz. 🚀
 
+

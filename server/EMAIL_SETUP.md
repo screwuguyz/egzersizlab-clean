@@ -76,3 +76,4 @@ SMTP_PASS=your-app-password
 - Gmail için App Password kullanın (normal şifre çalışmaz)
 - Kod 10 dakika geçerlidir, süresi dolunca otomatik silinir
 
+

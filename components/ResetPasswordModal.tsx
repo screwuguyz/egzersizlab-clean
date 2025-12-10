@@ -1,24 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { apiService } from '../services/apiService';
 
-interface VerificationModalProps {
+interface ResetPasswordModalProps {
   email: string;
-  name: string;
-  password: string;
-  phone?: string;
   onClose: () => void;
-  onSuccess: () => void;
 }
 
-const VerificationModal: React.FC<VerificationModalProps> = ({
-  email,
-  name,
-  password,
-  phone,
-  onClose,
-  onSuccess,
-}) => {
+const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ email, onClose }) => {
   const [code, setCode] = useState(['', '', '', '']);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resendLoading, setResendLoading] = useState(false);
@@ -73,16 +65,33 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
       return;
     }
 
+    if (newPassword.length < 8) {
+      setError('Şifre en az 8 karakter olmalıdır');
+      return;
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+      setError('Şifre en az bir küçük harf, bir büyük harf ve bir rakam içermelidir');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError('Şifreler eşleşmiyor');
+      return;
+    }
+
     setLoading(true);
     try {
-      const response = await apiService.verifyAndRegister(email, fullCode, password, name, phone);
+      const response = await apiService.resetPassword(email, fullCode, newPassword);
 
       if (response.success) {
-        onSuccess();
+        // Başarılı - Login modal'ına yönlendir veya direkt giriş yap
+        alert('Şifreniz başarıyla güncellendi! Lütfen yeni şifrenizle giriş yapın.');
         onClose();
+        // Login modal'ını açmak için window event'i tetikleyebiliriz
+        window.dispatchEvent(new CustomEvent('openLoginModal'));
       } else {
-        setError(response.error || 'Kod doğrulanamadı. Lütfen tekrar deneyin.');
-        // Hata durumunda kodları temizle
+        setError(response.error || 'Kod doğrulanamadı veya şifre güncellenemedi. Lütfen tekrar deneyin.');
         setCode(['', '', '', '']);
         inputRefs.current[0]?.focus();
       }
@@ -99,7 +108,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
     setResendLoading(true);
     setError(null);
     try {
-      const response = await apiService.sendVerificationCode(email, password, name, phone);
+      const response = await apiService.sendPasswordResetCode(email);
       if (response.success) {
         setCountdown(60); // 60 saniye bekle
         setCode(['', '', '', '']);
@@ -116,7 +125,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+      <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
         <div className="p-8">
           <button
             onClick={onClose}
@@ -127,17 +136,17 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
           </button>
 
           <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">E-posta Aktivasyonu</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Yeni Şifre Belirle</h2>
             <p className="text-gray-600 text-sm">
               <strong>{email}</strong> adresine gönderilen 4 haneli kodu giriniz
             </p>
@@ -152,7 +161,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3 text-center">
-                Aktivasyon Kodu
+                Şifre Sıfırlama Kodu
               </label>
               <div className="flex gap-3 justify-center" onPaste={handlePaste}>
                 {code.map((digit, index) => (
@@ -165,7 +174,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition"
+                    className="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition"
                   />
                 ))}
               </div>
@@ -174,12 +183,52 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
               </p>
             </div>
 
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Yeni Şifre <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition"
+                  placeholder="En az 8 karakter"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((p) => !p)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 text-sm"
+                >
+                  {showPassword ? 'Gizle' : 'Göster'}
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                En az 8 karakter, bir büyük harf, bir küçük harf ve bir rakam içermelidir
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Yeni Şifre (Tekrar) <span className="text-red-500">*</span>
+              </label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition"
+                placeholder="Şifrenizi tekrar giriniz"
+              />
+            </div>
+
             <button
               type="submit"
-              disabled={loading || code.join('').length !== 4}
-              className="w-full py-3 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || code.join('').length !== 4 || !newPassword || !confirmPassword}
+              className="w-full py-3 text-white font-bold rounded-lg shadow-lg bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Doğrulanıyor...' : 'Hesabı Aktifleştir'}
+              {loading ? 'Şifre Güncelleniyor...' : 'Şifreyi Güncelle'}
             </button>
 
             <div className="text-center">
@@ -187,7 +236,7 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
                 type="button"
                 onClick={handleResend}
                 disabled={resendLoading || countdown > 0}
-                className="text-sm text-purple-600 hover:text-purple-700 font-semibold disabled:text-gray-400 disabled:cursor-not-allowed"
+                className="text-sm text-orange-600 hover:text-orange-700 font-semibold disabled:text-gray-400 disabled:cursor-not-allowed"
               >
                 {countdown > 0
                   ? `Yeni kod gönder (${countdown}s)`
@@ -203,6 +252,5 @@ const VerificationModal: React.FC<VerificationModalProps> = ({
   );
 };
 
-export default VerificationModal;
-
+export default ResetPasswordModal;
 

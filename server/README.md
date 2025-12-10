@@ -101,3 +101,4 @@ npm start
 - Rate limiting: 15 dakikada 100 istek (genel), 5 istek (auth)
 - CORS sadece FRONTEND_URL'den istek kabul eder
 
+

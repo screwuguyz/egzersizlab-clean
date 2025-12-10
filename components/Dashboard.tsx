@@ -735,11 +735,11 @@ const Dashboard: React.FC = () => {
               <span>✅</span>
             </div>
           ) : (
-            <div className="menu-item locked premium-feature" onClick={() => handleLockedClick(true)}>
-              <span role="img" aria-label="chat">💬</span>
-              <span>Fizyoterapiste Sor</span>
-              <span>🔒</span>
-            </div>
+          <div className="menu-item locked premium-feature" onClick={() => handleLockedClick(true)}>
+            <span role="img" aria-label="chat">💬</span>
+            <span>Fizyoterapiste Sor</span>
+            <span>🔒</span>
+          </div>
           )}
           <div className="menu-item" onClick={() => setShowSupport(true)}>
             <span role="img" aria-label="ticket">🎟️</span>
@@ -769,10 +769,10 @@ const Dashboard: React.FC = () => {
       <div className="main-content">
         <div className="top-bar">
           <div className="welcome-section">
-            <div className="welcome-text">
-              <h1 id="welcome-title">Merhaba, {config.user_name} 👋</h1>
-              <p id="welcome-subtitle">{config.welcome_subtitle}</p>
-            </div>
+          <div className="welcome-text">
+            <h1 id="welcome-title">Merhaba, {config.user_name} 👋</h1>
+            <p id="welcome-subtitle">{config.welcome_subtitle}</p>
+          </div>
             {/* Başarılar - Welcome Text'in Yanında */}
             {hasPackage && (
               <div className="welcome-badges" onClick={() => setShowBadgesModal(true)} style={{ cursor: 'pointer' }}>
@@ -781,22 +781,22 @@ const Dashboard: React.FC = () => {
                   {badges.filter(b => b.earned).slice(0, 3).map((badge) => (
                     <div key={badge.id} className="welcome-badge-item" title={badge.name}>
                       <span className="welcome-badge-icon">{badge.icon}</span>
-                    </div>
-                  ))}
+                            </div>
+                          ))}
                   {badges.filter(b => b.earned).length > 3 && (
                     <div className="welcome-badge-more" title={`+${badges.filter(b => b.earned).length - 3} daha fazla`}>
                       +{badges.filter(b => b.earned).length - 3}
-                    </div>
+                      </div>
                   )}
                   {badges.filter(b => b.earned).length === 0 && (
                     <div style={{ fontSize: '12px', color: '#92400e', fontStyle: 'italic' }}>
                       İlk başarınızı kazanın!
                     </div>
                   )}
-                </div>
-              </div>
+                      </div>
+                      </div>
             )}
-          </div>
+                      </div>
           {/* Test Butonları - Paket Tipini Değiştir */}
           <div style={{ 
             position: 'fixed', 
@@ -825,7 +825,7 @@ const Dashboard: React.FC = () => {
               title="Paket yok görünümü"
             >
               ❌ Paket Yok
-            </div>
+                      </div>
             <div 
               style={{ 
                 background: packageType === 'basic' ? '#3b82f6' : '#e5e7eb',
@@ -844,7 +844,7 @@ const Dashboard: React.FC = () => {
               title="Temel paket görünümü"
             >
               📦 Temel Paket
-            </div>
+                        </div>
             <div 
               style={{ 
                 background: packageType === 'pro' ? '#10b981' : '#e5e7eb',
@@ -882,8 +882,8 @@ const Dashboard: React.FC = () => {
               title="Premium paket görünümü"
             >
               👑 Premium Paket
-            </div>
-          </div>
+                      </div>
+                    </div>
           <div className="top-bar-right">
             {/* Notification Bell */}
             <div className="notification-wrapper">
@@ -900,7 +900,7 @@ const Dashboard: React.FC = () => {
                 {unreadCount > 0 && (
                   <span className="notification-badge">{unreadCount}</span>
                 )}
-              </div>
+                  </div>
               
               {showNotifications && (
                 <>
@@ -913,36 +913,36 @@ const Dashboard: React.FC = () => {
                       )}
                     </div>
                     <div className="notification-items">
-                      {notifications.length === 0 ? (
+                  {notifications.length === 0 ? (
                         <div className="notification-empty">
                           <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔕</div>
                           <div>Yeni bildiriminiz yok</div>
                         </div>
-                      ) : (
+                  ) : (
                         notifications.map((notif) => (
-                          <div
-                            key={notif.id}
+                        <div
+                          key={notif.id}
                             className={`notification-item ${notif.read ? 'read' : 'unread'}`}
-                            onClick={() => handleNotificationClick(notif.id)}
-                          >
+                          onClick={() => handleNotificationClick(notif.id)}
+                        >
                             <div className="notification-item-title">{notif.title}</div>
                             <div className="notification-item-message">{notif.message}</div>
                             <div className="notification-item-meta">
                               <span className={`notification-item-type ${notif.type}`}>
                                 {notif.type === 'clinical' ? 'Klinik' : notif.type === 'admin' ? 'İdari' : 'Motivasyon'}
-                              </span>
+                            </span>
                               <span className="notification-item-date">{notif.date}</span>
-                            </div>
                           </div>
+                        </div>
                         ))
                       )}
                     </div>
                     {notifications.length > 0 && (
                       <div className="notification-footer">
                         <button className="notification-footer-btn">Tümünü Gör</button>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+                </div>
                 </>
               )}
             </div>
@@ -1068,36 +1068,36 @@ const Dashboard: React.FC = () => {
         <div className="content-area">
           {/* Analiz Başlatma Kartı - Sadece Paket Yokken Görünür */}
           {!hasPackage && (
-            <div className="main-cta-card">
-              <div className="cta-illustration">
-                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="100" cy="60" r="30" fill="#667eea" opacity="0.2" />
-                  <circle cx="100" cy="60" r="20" fill="#667eea" />
-                  <rect x="75" y="90" width="50" height="70" rx="5" fill="#667eea" />
-                  <rect x="70" y="100" width="15" height="40" rx="7" fill="#f59e0b" />
-                  <rect x="115" y="100" width="15" height="40" rx="7" fill="#f59e0b" />
-                  <rect x="85" y="155" width="12" height="35" rx="6" fill="#667eea" />
-                  <rect x="103" y="155" width="12" height="35" rx="6" fill="#667eea" />
-                  <rect x="130" y="80" width="50" height="70" rx="4" fill="white" stroke="#667eea" strokeWidth="2" />
-                  <line x1="140" y1="100" x2="170" y2="100" stroke="#667eea" strokeWidth="2" />
-                  <line x1="140" y1="115" x2="170" y2="115" stroke="#667eea" strokeWidth="2" />
-                  <line x1="140" y1="130" x2="165" y2="130" stroke="#667eea" strokeWidth="2" />
-                </svg>
-              </div>
-              <div className="cta-content">
-                <h2 id="cta-title">{config.cta_title}</h2>
-                <p id="cta-description">{config.cta_description}</p>
-                <button className="cta-button" onClick={handleAnalysisStart} disabled={analysisLoading}>
-                  <span>▶</span>
-                  <span id="cta-button-text">
-                    {analysisLoading ? 'Yönlendiriliyorsunuz...' : config.cta_button_text}
-                  </span>
-                </button>
-                <span className="duration-hint" id="cta-duration">
-                  {config.cta_duration}
-                </span>
-              </div>
+          <div className="main-cta-card">
+            <div className="cta-illustration">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="60" r="30" fill="#667eea" opacity="0.2" />
+                <circle cx="100" cy="60" r="20" fill="#667eea" />
+                <rect x="75" y="90" width="50" height="70" rx="5" fill="#667eea" />
+                <rect x="70" y="100" width="15" height="40" rx="7" fill="#f59e0b" />
+                <rect x="115" y="100" width="15" height="40" rx="7" fill="#f59e0b" />
+                <rect x="85" y="155" width="12" height="35" rx="6" fill="#667eea" />
+                <rect x="103" y="155" width="12" height="35" rx="6" fill="#667eea" />
+                <rect x="130" y="80" width="50" height="70" rx="4" fill="white" stroke="#667eea" strokeWidth="2" />
+                <line x1="140" y1="100" x2="170" y2="100" stroke="#667eea" strokeWidth="2" />
+                <line x1="140" y1="115" x2="170" y2="115" stroke="#667eea" strokeWidth="2" />
+                <line x1="140" y1="130" x2="165" y2="130" stroke="#667eea" strokeWidth="2" />
+              </svg>
             </div>
+            <div className="cta-content">
+              <h2 id="cta-title">{config.cta_title}</h2>
+              <p id="cta-description">{config.cta_description}</p>
+              <button className="cta-button" onClick={handleAnalysisStart} disabled={analysisLoading}>
+                  <span>▶</span>
+                <span id="cta-button-text">
+                  {analysisLoading ? 'Yönlendiriliyorsunuz...' : config.cta_button_text}
+                </span>
+              </button>
+              <span className="duration-hint" id="cta-duration">
+                {config.cta_duration}
+              </span>
+            </div>
+          </div>
           )}
 
           {/* Paket Satın Alan Kullanıcılar İçin Özellikler */}
@@ -1399,7 +1399,7 @@ const Dashboard: React.FC = () => {
               >
                 ✕
               </button>
-            </div>
+        </div>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -1440,7 +1440,7 @@ const Dashboard: React.FC = () => {
                     marginBottom: '6px',
                   }}>
                     {badge.name}
-                  </div>
+            </div>
                   {badge.description && (
                     <div style={{
                       fontSize: '11px',
@@ -1450,7 +1450,7 @@ const Dashboard: React.FC = () => {
                       minHeight: '30px',
                     }}>
                       {badge.description}
-                    </div>
+          </div>
                   )}
                   {!badge.earned && (
                     <div style={{
@@ -1461,8 +1461,8 @@ const Dashboard: React.FC = () => {
                       opacity: 0.5,
                     }}>
                       🔒
-                    </div>
-                  )}
+        </div>
+      )}
                   {badge.earned && (
                     <div style={{
                       fontSize: '12px',
@@ -1475,11 +1475,11 @@ const Dashboard: React.FC = () => {
                       display: 'inline-block',
                     }}>
                       ✓ Kazanıldı
-                    </div>
-                  )}
-                </div>
-              ))}
             </div>
+                  )}
+    </div>
+              ))}
+      </div>
             <div style={{
               marginTop: '24px',
               padding: '20px',
@@ -1490,10 +1490,10 @@ const Dashboard: React.FC = () => {
             }}>
               <div style={{ fontSize: '18px', color: '#92400e', fontWeight: 700, marginBottom: '6px' }}>
                 {badges.filter(b => b.earned).length} / {badges.length} başarı kazandınız! 🎉
-              </div>
+        </div>
               <div style={{ fontSize: '13px', color: '#b45309', marginTop: '4px' }}>
                 Devam edin, daha fazla başarı sizi bekliyor! Her rozet seni hedefine bir adım daha yaklaştırıyor! 💪
-              </div>
+        </div>
               <div style={{
                 marginTop: '12px',
                 width: '100%',
@@ -1509,9 +1509,9 @@ const Dashboard: React.FC = () => {
                   borderRadius: '999px',
                   transition: 'width 0.3s ease',
                 }} />
-              </div>
-            </div>
-          </div>
+      </div>
+      </div>
+        </div>
         </>
       )}
     </div>

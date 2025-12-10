@@ -1,17 +1,17 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 /**
- * Email Aktivasyon Kodu Modeli
+ * Şifre Sıfırlama Kodu Modeli
  */
-export interface IVerificationCode extends Document {
+export interface IPasswordResetCode extends Document {
   email: string;
   code: string; // 4 haneli kod
   expiresAt: Date;
-  verified: boolean;
+  used: boolean;
   createdAt: Date;
 }
 
-const verificationCodeSchema = new Schema<IVerificationCode>(
+const passwordResetCodeSchema = new Schema<IPasswordResetCode>(
   {
     email: {
       type: String,
@@ -30,7 +30,7 @@ const verificationCodeSchema = new Schema<IVerificationCode>(
       required: true,
       index: { expireAfterSeconds: 0 }, // TTL index - otomatik silme
     },
-    verified: {
+    used: {
       type: Boolean,
       default: false,
     },
@@ -41,14 +41,13 @@ const verificationCodeSchema = new Schema<IVerificationCode>(
 );
 
 // Email ve code için compound index (hızlı arama)
-verificationCodeSchema.index({ email: 1, code: 1 });
+passwordResetCodeSchema.index({ email: 1, code: 1 });
 
 // Expired kodları otomatik sil (TTL)
-verificationCodeSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+passwordResetCodeSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-export const VerificationCode = mongoose.model<IVerificationCode>(
-  'VerificationCode',
-  verificationCodeSchema
+export const PasswordResetCode = mongoose.model<IPasswordResetCode>(
+  'PasswordResetCode',
+  passwordResetCodeSchema
 );
-
 
