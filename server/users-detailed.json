@@ -5,31 +5,30 @@
     "email": "ataafurkan@gmail.com",
     "packageType": "none",
     "createdAt": "2025-12-10T10:40:17.279Z",
+    "lastAssessmentDate": "2025-12-10T13:05:31.308Z",
     "dashboardData": {
       "photos": {
-        "front": {
-          "exists": true,
-          "size": 4046075
-        },
+        "front": null,
         "side": null,
         "back": null
       },
       "formData": {
         "gender": "male",
-        "age": 24,
-        "height": 45,
+        "age": 25,
+        "height": 545,
         "weight": 45,
         "workType": "desk",
         "chronicConditions": "",
         "medications": "",
         "selectedAreas": [
-          "hip-front"
+          "elbow-front-left"
         ],
         "painDuration": "moderate",
-        "painIntensity": 9,
+        "painIntensity": 5,
         "selectedPainTypes": [
           "ache",
-          "burning"
+          "burning",
+          "stiffness"
         ],
         "safetyAnswers": {
           "surgery": "no",
@@ -41,20 +40,21 @@
       "assessmentResults": {
         "formData": {
           "gender": "male",
-          "age": 24,
-          "height": 45,
+          "age": 25,
+          "height": 545,
           "weight": 45,
           "workType": "desk",
           "chronicConditions": "",
           "medications": "",
           "selectedAreas": [
-            "hip-front"
+            "elbow-front-left"
           ],
           "painDuration": "moderate",
-          "painIntensity": 9,
+          "painIntensity": 5,
           "selectedPainTypes": [
             "ache",
-            "burning"
+            "burning",
+            "stiffness"
           ],
           "safetyAnswers": {
             "surgery": "no",
@@ -63,15 +63,12 @@
           },
           "manualArea": ""
         },
-        "photoMetadata": {
-          "front": {
-            "exists": true,
-            "size": 4046075
-          },
+        "photos": {
+          "front": null,
           "side": null,
           "back": null
         },
-        "completedAt": "2025-12-10T12:00:01.560Z"
+        "completedAt": "2025-12-10T13:05:31.231Z"
       },
       "notifications": []
     }
@@ -82,6 +79,7 @@
     "email": "mervevekuscu@gmail.com",
     "packageType": "none",
     "createdAt": "2025-12-10T11:05:58.184Z",
+    "lastAssessmentDate": null,
     "dashboardData": {
       "notifications": []
     }

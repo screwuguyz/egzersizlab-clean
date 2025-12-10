@@ -441,7 +441,7 @@ router.put(
         });
       }
 
-      const { assessmentResults, exercisePrograms, progressData, notifications, photos, formData } = req.body;
+      const { assessmentResults, exercisePrograms, progressData, notifications, photos, formData, clinicalAssessments } = req.body;
 
       const user = await User.findById(userId);
       if (!user) {
@@ -472,6 +472,12 @@ router.put(
       // Form verileri geldiğinde - ESKİ FORM VERİLERİNİ SİL, YENİSİNİ KAYDET
       if (formData !== undefined) {
         user.dashboardData.formData = formData;
+      }
+      
+      // Klinik test assessment'ları geldiğinde - ESKİ VERİLERİ SİL, YENİSİNİ KAYDET
+      if (clinicalAssessments !== undefined) {
+        user.dashboardData.clinicalAssessments = clinicalAssessments;
+        user.dashboardData.lastClinicalAssessmentDate = new Date();
       }
       
       // Diğer veriler (egzersiz programları, ilerleme, bildirimler) - bunlar korunur

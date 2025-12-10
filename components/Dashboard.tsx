@@ -58,6 +58,7 @@ const Dashboard: React.FC = () => {
   const [toast, setToast] = useState<string | null>(null);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
+  const [clinicalTestType, setClinicalTestType] = useState<string | null>(null); // Hangi klinik test açılacak
   const [showSummary, setShowSummary] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
@@ -612,7 +613,7 @@ const Dashboard: React.FC = () => {
         
         /* Cart Styles */
         .cart-wrapper { position: relative; }
-        .cart-bell { width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 18px; position: relative; }
+        .cart-bell { width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 18px; position: relative; flex-shrink: 0; }
         .cart-bell:hover { background: #d1fae5; }
         .cart-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: bounce 0.5s ease; }
         @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
@@ -634,7 +635,7 @@ const Dashboard: React.FC = () => {
         .cart-total-price { font-size: 20px; font-weight: 800; color: #10b981; }
         .cart-checkout-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
         .cart-checkout-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-        .profile-pic { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 16px; cursor: pointer; position: relative; }
+        .profile-pic { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 16px; cursor: pointer; position: relative; flex-shrink: 0; }
         .content-area { padding: 32px; max-width: 1200px; margin: 0 auto; }
         .main-cta-card { background: ${config.card_background}; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 32px; display: flex; gap: 32px; align-items: center; }
         .cta-illustration { width: 180px; height: 180px; flex-shrink: 0; }
@@ -788,7 +789,120 @@ const Dashboard: React.FC = () => {
         .badge-name { font-size: 12px; font-weight: 700; color: #1f2937; }
         .badge-lock { position: absolute; top: 8px; right: 8px; font-size: 16px; opacity: 0.6; }
         
+        /* Klinik Testler Bölümü */
+        .clinical-tests-section {
+          background: #fff;
+          border-radius: 16px;
+          padding: 24px;
+          margin-bottom: 24px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+          width: 100%;
+          max-width: 100%;
+          overflow: visible;
+        }
+        .clinical-tests-title {
+          font-size: 18px;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 16px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .clinical-tests-buttons {
+          display: flex;
+          gap: 12px;
+          flex-wrap: nowrap;
+          align-items: stretch;
+          justify-content: flex-start;
+        }
+        .clinical-test-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 16px;
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          border: 2px solid transparent;
+          border-radius: 12px;
+          color: #fff;
+          cursor: pointer;
+          transition: all 0.3s;
+          flex: 1 1 0;
+          min-width: 0;
+          box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        .clinical-test-btn:hover:not(:disabled) {
+          background: linear-gradient(135deg, #764ba2, #667eea);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .clinical-test-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        .test-btn-icon {
+          font-size: 24px;
+          flex-shrink: 0;
+        }
+        .test-btn-content {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          flex: 1;
+          min-width: 0;
+        }
+        .test-btn-text {
+          font-size: 13px;
+          font-weight: 700;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .test-btn-desc {
+          font-size: 10px;
+          font-weight: 500;
+          opacity: 0.9;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        
+        @media (max-width: 1200px) {
+          .clinical-test-btn {
+            padding: 10px 12px;
+          }
+          .test-btn-icon {
+            font-size: 20px;
+          }
+          .test-btn-text {
+            font-size: 12px;
+          }
+          .test-btn-desc {
+            font-size: 9px;
+          }
+        }
+        
         @media (max-width: 768px) {
+          .clinical-tests-buttons {
+            flex-wrap: wrap;
+            gap: 8px;
+          }
+          .clinical-test-btn {
+            flex: 1 1 calc(50% - 4px);
+            min-width: 0;
+            padding: 10px 12px;
+          }
+          .test-btn-icon {
+            font-size: 20px;
+          }
+          .test-btn-text {
+            font-size: 12px;
+          }
+          .test-btn-desc {
+            font-size: 10px;
+          }
           .sidebar { position: fixed; left: -260px; z-index: 100; transition: left 0.3s; }
           .sidebar.open { left: 0; }
           .main-cta-card { flex-direction: column; text-align: center; }
@@ -1229,6 +1343,79 @@ const Dashboard: React.FC = () => {
           {/* Paket Satın Alan Kullanıcılar İçin Özellikler */}
           {hasPackage ? (
             <>
+              {/* Klinik Testler Bölümü */}
+              <div className="clinical-tests-section">
+                <div className="clinical-tests-title">🔬 Klinik Testler</div>
+                <div className="clinical-tests-buttons">
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Manuel kas testi simülasyonu - Hangi kaslarınız uykuda, hangileri aşırı çalışıyor? (Gluteal amnezi, core stabilizasyonu vb.)"
+                  >
+                    <span className="test-btn-icon">💪</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Kas Kuvvet Analizi</span>
+                      <span className="test-btn-desc">Manuel kas testi simülasyonu</span>
+                    </div>
+                  </button>
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Ağrısının sebebi kas kısalığı mı? Hamstring, pektoral, iliopsoas, piriformis gerginlik testleri."
+                  >
+                    <span className="test-btn-icon">📏</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Esneklik Testleri</span>
+                      <span className="test-btn-desc">Kas kısalık analizi</span>
+                    </div>
+                  </button>
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Gonyometrik analiz - Eklemler tam açıyla hareket ediyor mu, kısıtlılık derecesi nedir?"
+                  >
+                    <span className="test-btn-icon">📐</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Eklem Hareket Açıklığı</span>
+                      <span className="test-btn-desc">Gonyometrik analiz</span>
+                    </div>
+                  </button>
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Sinir germe testleri - Ağrı kas kaynaklı mı yoksa sinir sıkışması mı (Fıtık/Siyatik)?"
+                  >
+                    <span className="test-btn-icon">🧠</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Nörodinamik Testler</span>
+                      <span className="test-btn-desc">Sinir germe testleri</span>
+                    </div>
+                  </button>
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Vücudun uzaydaki konum algısı ve denge stratejisi"
+                  >
+                    <span className="test-btn-icon">⚖️</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Denge & Propriosepsiyon</span>
+                      <span className="test-btn-desc">Fonksiyonel denge analizi</span>
+                    </div>
+                  </button>
+                  <button 
+                    className="clinical-test-btn"
+                    disabled
+                    title="Çömelme, eğilme ve uzanma sırasında omurga biyomekaniği kontrolü"
+                  >
+                    <span className="test-btn-icon">🩺</span>
+                    <div className="test-btn-content">
+                      <span className="test-btn-text">Hareket Kalitesi</span>
+                      <span className="test-btn-desc">Biyomekanik analiz</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
               {/* İstatistik Kartları */}
               <div className="stats-grid">
                 <div className="stat-card">
@@ -1454,7 +1641,11 @@ const Dashboard: React.FC = () => {
 
       <AssessmentWizard
         open={showWizard}
-        onClose={() => setShowWizard(false)}
+        clinicalTestType={clinicalTestType}
+        onClose={() => {
+          setShowWizard(false);
+          setClinicalTestType(null);
+        }}
         onComplete={() => {
           setShowSummary(true);
         }}

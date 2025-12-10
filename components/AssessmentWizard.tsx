@@ -142,9 +142,10 @@ interface AssessmentWizardProps {
   open: boolean;
   onClose: () => void;
   onComplete?: () => void;
+  clinicalTestType?: string | null; // Hangi klinik test açıldı: 'muscle-strength', 'flexibility', 'range-of-motion', 'posture', 'functional'
 }
 
-const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onComplete }) => {
+const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onComplete, clinicalTestType }) => {
   const [step, setStep] = useState<StepKey>(1);
   const [gender, setGender] = useState<string | null>(null);
   const [age, setAge] = useState<number | null>(null);

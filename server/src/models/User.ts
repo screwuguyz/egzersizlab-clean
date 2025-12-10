@@ -18,8 +18,10 @@ export interface IUser extends Document {
     notifications?: any[];
     photos?: any;
     formData?: any;
+    clinicalAssessments?: any; // Klinik test assessment'ları
     lastLogin?: Date;
     lastAssessmentDate?: Date; // Son assessment tarihi
+    lastClinicalAssessmentDate?: Date; // Son klinik test tarihi
   };
   createdAt: Date;
   updatedAt: Date;
@@ -77,8 +79,10 @@ const userSchema = new Schema<IUser>(
         notifications: [Schema.Types.Mixed],
         photos: Schema.Types.Mixed,
         formData: Schema.Types.Mixed,
+        clinicalAssessments: Schema.Types.Mixed, // Klinik test assessment'ları
         lastLogin: Date,
         lastAssessmentDate: Date, // Son assessment tarihi
+        lastClinicalAssessmentDate: Date, // Son klinik test tarihi
       },
       default: {},
     },
