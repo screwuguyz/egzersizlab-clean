@@ -65,13 +65,35 @@ const startServer = async () => {
     await connectDatabase();
 
     // Server'ı dinle
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`
 🚀 Server çalışıyor!
 📍 Port: ${PORT}
 🌍 Environment: ${process.env.NODE_ENV || 'development'}
 🔒 Güvenlik: Aktif
       `);
+    });
+
+    // Port kullanımda hatası için özel hata yönetimi
+    server.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`
+❌ HATA: Port ${PORT} zaten kullanımda!
+        
+🔧 Çözüm seçenekleri:
+   1. Port 5000'i kullanan işlemi kapatın:
+      netstat -ano | findstr :5000
+      taskkill /PID [PID_NUMARASI] /F
+   
+   2. Veya farklı bir port kullanın:
+      set PORT=5001
+      npm run dev
+        `);
+        process.exit(1);
+      } else {
+        console.error('❌ Server hatası:', error);
+        process.exit(1);
+      }
     });
   } catch (error) {
     console.error('❌ Server başlatılamadı:', error);

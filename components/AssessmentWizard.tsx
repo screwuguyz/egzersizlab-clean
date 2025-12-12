@@ -357,6 +357,11 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onCo
         // Hata olsa bile devam et
       }
 
+      // Kullanıcının ağrılı bölgelerini localStorage'a kaydet
+      if (selectedAreas && selectedAreas.length > 0) {
+        localStorage.setItem('userPainAreas', JSON.stringify(selectedAreas));
+      }
+
       if (onComplete) onComplete();
       onClose();
     }
@@ -1142,63 +1147,86 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onCo
           flex: 1;
           display: flex;
           flex-wrap: wrap;
-          gap: 6px;
-          padding: 8px 10px;
+          gap: 5px;
+          padding: 6px 8px;
           background: #f8fafc;
           border-radius: 8px;
           min-height: 36px;
-          align-items: center;
+          max-height: 100px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          align-items: flex-start;
+          align-content: flex-start;
+        }
+        .selected-areas-compact::-webkit-scrollbar {
+          width: 8px;
+        }
+        .selected-areas-compact::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 4px;
+        }
+        .selected-areas-compact::-webkit-scrollbar-thumb {
+          background: #94a3b8;
+          border-radius: 4px;
+        }
+        .selected-areas-compact::-webkit-scrollbar-thumb:hover {
+          background: #64748b;
         }
         .empty-hint-sm {
-          font-size: 18px;
+          font-size: 16px;
           color: #94a3b8;
         }
         .area-tag-sm {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 12px;
+          gap: 4px;
+          padding: 4px 8px;
           background: #ecfdf5;
           border: 1px solid #a7f3d0;
-          border-radius: 14px;
-          font-size: 18px;
+          border-radius: 12px;
+          font-size: 13px;
           font-weight: 600;
           color: #047857;
+          white-space: nowrap;
+          flex-shrink: 0;
         }
         .area-tag-sm button {
           background: none;
           border: none;
           color: #059669;
-          font-size: 18px;
+          font-size: 14px;
           cursor: pointer;
           padding: 0;
           line-height: 1;
+          margin-left: 2px;
         }
         .manual-add-compact {
           display: flex;
           gap: 6px;
+          flex-shrink: 0;
         }
         .manual-input-sm {
-          width: 200px;
-          padding: 14px 16px;
+          width: 160px;
+          padding: 8px 12px;
           border: 2px solid #e2e8f0;
-          border-radius: 12px;
-          font-size: 18px;
+          border-radius: 10px;
+          font-size: 14px;
         }
         .manual-input-sm:focus {
           outline: none;
           border-color: #10b981;
         }
         .manual-add-btn-sm {
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           border: none;
-          border-radius: 12px;
+          border-radius: 10px;
           background: #10b981;
           color: #fff;
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 700;
           cursor: pointer;
+          flex-shrink: 0;
         }
         
         /* Compact Body Diagram */

@@ -8,6 +8,7 @@ import SettingsModal from './SettingsModal';
 import VideoModal from './VideoModal';
 import ExerciseProgramModal from './ExerciseProgramModal';
 import ProgressModal from './ProgressModal';
+import ClinicalTestModal from './ClinicalTestModal';
 import AnimatedLogo from './AnimatedLogo';
 import { apiService } from '../services/apiService';
 
@@ -58,7 +59,7 @@ const Dashboard: React.FC = () => {
   const [toast, setToast] = useState<string | null>(null);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
-  const [clinicalTestType, setClinicalTestType] = useState<string | null>(null); // Hangi klinik test açılacak
+  const [clinicalTestType, setClinicalTestType] = useState<'muscle-strength' | 'flexibility' | 'rom' | 'neurodynamic' | 'balance' | 'movement' | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
@@ -90,6 +91,28 @@ const Dashboard: React.FC = () => {
   const [showCart, setShowCart] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
+  
+  // Kullanıcının ağrılı bölgelerini localStorage'dan oku
+  const [userPainAreas, setUserPainAreas] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('userPainAreas');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  
+  // AssessmentWizard tamamlandığında ağrılı bölgeleri güncelle
+  useEffect(() => {
+    const saved = localStorage.getItem('userPainAreas');
+    if (saved) {
+      try {
+        setUserPainAreas(JSON.parse(saved));
+      } catch {
+        setUserPainAreas([]);
+      }
+    }
+  }, [showSummary]); // Summary gösterildiğinde güncelle
   const [notifications, setNotifications] = useState<
     { id: string; title: string; message: string; type: 'clinical' | 'admin' | 'motivation'; read: boolean; date: string }[]
   >([
@@ -820,7 +843,7 @@ const Dashboard: React.FC = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 12px 16px;
+          padding: 12px 14px;
           background: linear-gradient(135deg, #667eea, #764ba2);
           border: 2px solid transparent;
           border-radius: 12px;
@@ -828,7 +851,7 @@ const Dashboard: React.FC = () => {
           cursor: pointer;
           transition: all 0.3s;
           flex: 1 1 0;
-          min-width: 0;
+          min-width: 120px;
           box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
         }
         .clinical-test-btn:hover:not(:disabled) {
@@ -850,34 +873,37 @@ const Dashboard: React.FC = () => {
           gap: 2px;
           flex: 1;
           min-width: 0;
+          overflow: visible;
         }
         .test-btn-text {
           font-size: 13px;
           font-weight: 700;
           line-height: 1.2;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          white-space: normal;
+          overflow: visible;
+          word-wrap: break-word;
+          hyphens: auto;
         }
         .test-btn-desc {
           font-size: 10px;
           font-weight: 500;
           opacity: 0.9;
           line-height: 1.2;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          white-space: normal;
+          overflow: visible;
+          word-wrap: break-word;
         }
         
         @media (max-width: 1200px) {
           .clinical-test-btn {
-            padding: 10px 12px;
+            padding: 10px 10px;
+            min-width: 100px;
           }
           .test-btn-icon {
             font-size: 20px;
           }
           .test-btn-text {
-            font-size: 12px;
+            font-size: 11px;
           }
           .test-btn-desc {
             font-size: 9px;
@@ -1349,68 +1375,68 @@ const Dashboard: React.FC = () => {
                 <div className="clinical-tests-buttons">
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('muscle-strength')}
                     title="Manuel kas testi simülasyonu - Hangi kaslarınız uykuda, hangileri aşırı çalışıyor? (Gluteal amnezi, core stabilizasyonu vb.)"
                   >
                     <span className="test-btn-icon">💪</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Kas Kuvvet Analizi</span>
-                      <span className="test-btn-desc">Manuel kas testi simülasyonu</span>
+                      <span className="test-btn-text">Kas Kuvveti</span>
+                      <span className="test-btn-desc">Manuel test</span>
                     </div>
                   </button>
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('flexibility')}
                     title="Ağrısının sebebi kas kısalığı mı? Hamstring, pektoral, iliopsoas, piriformis gerginlik testleri."
                   >
                     <span className="test-btn-icon">📏</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Esneklik Testleri</span>
-                      <span className="test-btn-desc">Kas kısalık analizi</span>
+                      <span className="test-btn-text">Esneklik</span>
+                      <span className="test-btn-desc">Kas kısalığı</span>
                     </div>
                   </button>
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('rom')}
                     title="Gonyometrik analiz - Eklemler tam açıyla hareket ediyor mu, kısıtlılık derecesi nedir?"
                   >
                     <span className="test-btn-icon">📐</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Eklem Hareket Açıklığı</span>
-                      <span className="test-btn-desc">Gonyometrik analiz</span>
+                      <span className="test-btn-text">EHA</span>
+                      <span className="test-btn-desc">Gonyometri</span>
                     </div>
                   </button>
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('neurodynamic')}
                     title="Sinir germe testleri - Ağrı kas kaynaklı mı yoksa sinir sıkışması mı (Fıtık/Siyatik)?"
                   >
                     <span className="test-btn-icon">🧠</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Nörodinamik Testler</span>
-                      <span className="test-btn-desc">Sinir germe testleri</span>
+                      <span className="test-btn-text">Nörodinamik</span>
+                      <span className="test-btn-desc">Sinir testi</span>
                     </div>
                   </button>
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('balance')}
                     title="Vücudun uzaydaki konum algısı ve denge stratejisi"
                   >
                     <span className="test-btn-icon">⚖️</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Denge & Propriosepsiyon</span>
-                      <span className="test-btn-desc">Fonksiyonel denge analizi</span>
+                      <span className="test-btn-text">Denge</span>
+                      <span className="test-btn-desc">Fonksiyonel</span>
                     </div>
                   </button>
                   <button 
                     className="clinical-test-btn"
-                    disabled
+                    onClick={() => setClinicalTestType('movement')}
                     title="Çömelme, eğilme ve uzanma sırasında omurga biyomekaniği kontrolü"
                   >
                     <span className="test-btn-icon">🩺</span>
                     <div className="test-btn-content">
-                      <span className="test-btn-text">Hareket Kalitesi</span>
-                      <span className="test-btn-desc">Biyomekanik analiz</span>
+                      <span className="test-btn-text">Hareket Analizi</span>
+                      <span className="test-btn-desc">Biyomekanik</span>
                     </div>
                   </button>
                 </div>
@@ -1671,6 +1697,14 @@ const Dashboard: React.FC = () => {
       <VideoModal open={showVideo} onClose={() => setShowVideo(false)} />
       <ExerciseProgramModal open={showExerciseProgram} onClose={() => setShowExerciseProgram(false)} />
       <ProgressModal open={showProgress} onClose={() => setShowProgress(false)} />
+      {clinicalTestType && (
+        <ClinicalTestModal
+          isOpen={!!clinicalTestType}
+          onClose={() => setClinicalTestType(null)}
+          testType={clinicalTestType}
+          userPainAreas={userPainAreas}
+        />
+      )}
       
       {/* Başarılar Modal */}
       {showBadgesModal && (
