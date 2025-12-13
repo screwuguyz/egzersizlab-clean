@@ -236,3 +236,4 @@ const partLabels: Record<string, string> = {
 - **Oluşturulma:** 2024
 - **Son Güncelleme:** 2024
 
+

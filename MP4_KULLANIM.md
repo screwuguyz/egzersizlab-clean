@@ -102,3 +102,4 @@ Her ikisini de ekleyebilirsiniz, tarayıcı uygun olanı seçer.
 - Video sıkıştırma araçları kullanın
 - Dosya boyutunu < 2MB'a düşürün
 
+
