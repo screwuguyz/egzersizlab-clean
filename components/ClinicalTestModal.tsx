@@ -137,17 +137,35 @@ const testConfigs = {
     title: 'Esneklik Testleri',
     icon: '📏',
     instructions: [
-      'Kamerayı yan profilden konumlandırın',
+      'Her testi dikkatli bir şekilde uygulayın',
       'Hareketi yavaş yapın, zorlamayın',
       'Ağrı olursa durun',
     ],
     tests: [
+      {
+        id: 'knee-wall-distance',
+        name: 'Diz-Duvar Mesafesi Testi',
+        description: 'Baldır ve ayak bileği esnekliği için altın standart test. Sadece cetvel yeterli!',
+        duration: '2 dakika',
+        testMode: 'measurement',
+        measurementUnit: 'cm',
+        measurementLabel: 'Ayak Bileği',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        instructions: ['Görsel talimatlara bakarak testi uygulayın.'],
+        evaluationCriteria: {
+          good: { min: 10, label: 'Normal', color: '#10b981', icon: '✅', description: 'Esneklik normal.' },
+          moderate: { min: 5, max: 9, label: 'Hafif Kısıtlı', color: '#f59e0b', icon: '⚠️', description: 'Germe önerilir.' },
+          poor: { max: 4, label: 'Kısıtlı', color: '#ef4444', icon: '❌', description: 'Yoğun esneklik çalışması gerekli.' },
+        },
+        evaluationPoints: [],
+      },
       {
         id: 'hamstring',
         name: 'Hamstring Esneklik',
         description: 'Bacak düz, öne eğilin, ne kadar uzanabiliyorsunuz?',
         duration: '15 saniye',
         videoTips: 'Yandan çekin, eğilme açısını görebilmeli',
+        relevantBodyAreas: ['lower-back', 'hip-front', 'hip-back', 'thigh-back-left', 'thigh-back-right'],
         evaluationPoints: ['Ne kadar eğilebildi?', 'Diz bükülüyor mu?', 'Ağrı var mı?'],
       },
     ],
@@ -161,30 +179,143 @@ const testConfigs = {
     ],
     tests: [
       {
+        id: 'ankle-dorsiflexion-rom',
+        name: 'Ayak Bileği Dorsifleksiyon EHA',
+        description: 'Ayak bileğinizi yukarı çekme hareketinizi kaydedin. Görsel açı rehberi ile karşılaştırın.',
+        duration: '15 saniye',
+        videoTips: 'Yandan çekin, ayak ve baldır net görünsün',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        instructions: [
+          'Yere oturun, bacağınızı düz uzatın',
+          'Kamerayı yandan konumlandırın (ayak profili görünsün)',
+          'Ayak ucunuzu kendinize doğru çekin (dorsifleksiyon)',
+          'Maksimum noktada 3 saniye tutun',
+          'Hareketi yavaş ve kontrollü yapın',
+        ],
+        evaluationPoints: [
+          'Ayak ucu baldıra yaklaşabiliyor mu? (Normal: 20°+)',
+          'Hareket sırasında ağrı var mı?',
+          'Sol-sağ fark var mı?',
+          'Topuk yerden kalkıyor mu?',
+        ],
+        angleGuide: {
+          title: 'Dorsifleksiyon Açı Rehberi',
+          ranges: [
+            { angle: '20°+', status: 'Normal', color: '#10b981', description: 'Ayak ucu rahatça yukarı çıkıyor' },
+            { angle: '10-20°', status: 'Hafif Kısıtlı', color: '#f59e0b', description: 'Ayak ucu biraz yukarı çıkıyor' },
+            { angle: '<10°', status: 'Kısıtlı', color: '#ef4444', description: 'Ayak ucu çok az hareket ediyor' },
+          ],
+        },
+      },
+      {
+        id: 'ankle-plantarflexion-rom',
+        name: 'Ayak Bileği Plantarfleksiyon EHA',
+        description: 'Ayak bileğinizi aşağı indirme (parmak ucuna basma) hareketinizi kaydedin.',
+        duration: '15 saniye',
+        videoTips: 'Yandan çekin, ayak ve baldır net görünsün',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        instructions: [
+          'Yere oturun, bacağınızı düz uzatın',
+          'Kamerayı yandan konumlandırın',
+          'Ayak ucunuzu ileri doğru uzatın (bale hareketi gibi)',
+          'Maksimum noktada 3 saniye tutun',
+        ],
+        evaluationPoints: [
+          'Ayak ucu tam uzanabiliyor mu? (Normal: 40-50°)',
+          'Hareket sırasında ağrı var mı?',
+          'Sol-sağ fark var mı?',
+        ],
+        angleGuide: {
+          title: 'Plantarfleksiyon Açı Rehberi',
+          ranges: [
+            { angle: '40°+', status: 'Normal', color: '#10b981', description: 'Ayak ucu tam uzanıyor' },
+            { angle: '30-40°', status: 'Hafif Kısıtlı', color: '#f59e0b', description: 'Ayak ucu biraz uzanıyor' },
+            { angle: '<30°', status: 'Kısıtlı', color: '#ef4444', description: 'Ayak ucu az uzanıyor' },
+          ],
+        },
+      },
+      {
         id: 'shoulder',
         name: 'Omuz EHA',
         description: 'Kolu yukarı kaldırın, ne kadar açılabiliyor?',
         duration: '20 saniye',
         videoTips: 'Önden çekin, omuz açısını görebilmeli',
+        relevantBodyAreas: ['shoulder-front-left', 'shoulder-front-right', 'shoulder-back-left', 'shoulder-back-right'],
         evaluationPoints: ['Tam açılabiliyor mu?', 'Ağrı var mı?', 'Kısıtlılık var mı?'],
       },
     ],
   },
   neurodynamic: {
-    title: 'Nörodinamik Testler',
+    title: 'Nörodinamik Testler (Sinir Germe)',
     icon: '🧠',
     instructions: [
-      'Testi yavaş yapın',
-      'Ağrı veya uyuşma olursa durun',
+      'Testi yavaş ve kontrollü yapın',
+      'Ağrı veya uyuşma olursa hareketi durdurun',
+      'Her testte hissettiğinizi seçin',
     ],
     tests: [
       {
-        id: 'slump',
-        name: 'Slump Test',
-        description: 'Oturun, baş öne, bacak düz, ayak bileğini çekin',
-        duration: '20 saniye',
-        videoTips: 'Yandan çekin, tüm vücut görünmeli',
-        evaluationPoints: ['Ağrı var mı?', 'Uyuşma var mı?', 'Nerede hissediliyor?'],
+        id: 'tibial-nerve-test',
+        name: 'Tibial Sinir Testi',
+        description: 'Baldır arkası, topuk ve ayak tabanı ağrıları için. Tarsal Tünel Sendromu veya topuk dikeni sanılan sinir ağrılarını tespit eder.',
+        duration: '30 saniye',
+        testMode: 'response',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        targetArea: 'Baldırın tam arkası, topuk ve ayak tabanı',
+        detailedSteps: [
+          { step: 1, title: 'Başlangıç Pozisyonu', instruction: 'Sırtüstü yat, kolların yanlarda rahat olsun.' },
+          { step: 2, title: 'Bacak Kaldırma', instruction: 'Test edeceğin bacağı dizini BÜKMEDEN dümdüz yukarı kaldır. Diğer bacak yerde düz kalsın.' },
+          { step: 3, title: 'Ayağı Çekme', instruction: 'Ayak ucunu kendine doğru çek (sanki ayak tabanıyla tavana bakmaya çalışıyorsun).' },
+          { step: 4, title: 'Ayağı Döndürme', instruction: 'Ayak tabanını DIŞA doğru çevirmeye çalış (ayak tabanı dışarı baksın).' },
+          { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
+        ],
+        responseOptions: [
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Karıncalanma oldu', icon: '⚡', result: 'Pozitif', description: 'Tibial sinir hassasiyeti tespit edildi. Fizyoterapist değerlendirmesi önerilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+        ],
+      },
+      {
+        id: 'peroneal-nerve-test',
+        name: 'Peroneal (Fibular) Sinir Testi',
+        description: 'Kaval kemiği önü, ayak bileği ön-dış kısmı ve ayak sırtı ağrıları için. Düşük ayak başlangıcı veya Shin Splints ile karışan sinir sorunlarını tespit eder.',
+        duration: '30 saniye',
+        testMode: 'response',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        targetArea: 'Kaval kemiği önü, ayak bileği ön-dış kısmı, ayak sırtı',
+        detailedSteps: [
+          { step: 1, title: 'Başlangıç Pozisyonu', instruction: 'Sırtüstü yat, rahatla.' },
+          { step: 2, title: 'Bacak Kaldırma', instruction: 'Test edeceğin bacağı dizini BÜKMEDEN düz kaldır.' },
+          { step: 3, title: 'Ayağı Uzatma', instruction: 'Gaz pedalına basar gibi ayağını ileri uzat (bale hareketi gibi).' },
+          { step: 4, title: 'Ayağı Döndürme', instruction: 'Ayak tabanını İÇERİ doğru döndür (ayak tabanı diğer ayağa baksın).' },
+          { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
+        ],
+        responseOptions: [
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Uyuşma oldu', icon: '⚡', result: 'Pozitif', description: 'Peroneal sinir hassasiyeti tespit edildi. Fizyoterapist değerlendirmesi önerilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+        ],
+      },
+      {
+        id: 'sural-nerve-test',
+        name: 'Sural Sinir Testi',
+        description: 'Ayak bileği dış topuk kısmı ve baldır dış yan ağrıları için. Kronik burkulma sonrası geçmeyen ağrıların sinir kaynaklı olup olmadığını tespit eder.',
+        duration: '30 saniye',
+        testMode: 'response',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        targetArea: 'Ayak bileği dış topuk (lateral malleol) çevresi, baldır dış yanı',
+        detailedSteps: [
+          { step: 1, title: 'Başlangıç Pozisyonu', instruction: 'Sırtüstü yat, rahatla.' },
+          { step: 2, title: 'Bacak Kaldırma', instruction: 'Test edeceğin bacağı dizini BÜKMEDEN düz kaldır.' },
+          { step: 3, title: 'Ayağı Çekme', instruction: 'Ayak ucunu kendine doğru çek (dorsifleksiyon).' },
+          { step: 4, title: 'Ayağı Döndürme', instruction: 'Ayak tabanını İÇERİ doğru döndür (ayak tabanı diğer ayağa baksın).' },
+          { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
+        ],
+        responseOptions: [
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Yanma oldu', icon: '⚡', result: 'Pozitif', description: 'Sural sinir hassasiyeti tespit edildi. Kronik burkulma sonrası sinir hasarı olabilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+        ],
       },
     ],
   },
@@ -226,6 +357,26 @@ const testConfigs = {
   },
 };
 
+// Ölçüm sonucu değerlendirmesi
+interface MeasurementResult {
+  value: number;
+  status: 'good' | 'moderate' | 'poor';
+  label: string;
+  color: string;
+  icon: string;
+  description: string;
+}
+
+const evaluateMeasurement = (value: number, criteria: any): MeasurementResult => {
+  if (value >= criteria.good.min) {
+    return { value, status: 'good', ...criteria.good };
+  } else if (value >= criteria.moderate.min && value <= criteria.moderate.max) {
+    return { value, status: 'moderate', ...criteria.moderate };
+  } else {
+    return { value, status: 'poor', ...criteria.poor };
+  }
+};
+
 const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, testType, userPainAreas = [] }) => {
   const [currentStep, setCurrentStep] = useState<TestStep>('instructions');
   const [currentTestIndex, setCurrentTestIndex] = useState(0);
@@ -234,10 +385,21 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [skippedTests, setSkippedTests] = useState<Set<string>>(new Set());
+  
+  // Ölçüm bazlı testler için state
+  const [measurements, setMeasurements] = useState<Record<string, { left: string; right: string; photo?: string }>>({});
+  const [measurementResults, setMeasurementResults] = useState<Record<string, { left?: MeasurementResult; right?: MeasurementResult }>>({});
+  const [showMeasurementResults, setShowMeasurementResults] = useState(false);
+  
+  // Nörodinamik test yanıtları
+  const [neurodynamicResponses, setNeurodynamicResponses] = useState<Record<string, { responseId: string; result: string; description: string; color: string }>>({});
+  
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   const baseConfig = testConfigs[testType];
   
@@ -321,7 +483,11 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
   }
 
   const currentTest = config.tests[currentTestIndex];
-  const completedTestsCount = Object.keys(recordedVideos).length;
+  // Ölçüm testleri + video testleri toplam tamamlanan sayısı
+  const completedMeasurementTests = Object.keys(measurementResults).filter(id => 
+    measurementResults[id]?.left || measurementResults[id]?.right
+  ).length;
+  const completedTestsCount = Object.keys(recordedVideos).length + completedMeasurementTests;
   const allTestsCompleted = currentTestIndex >= config.tests.length - 1;
   const canSubmit = completedTestsCount >= 1; // En az 1 test yeterli
   const showAnimation = testType === 'muscle-strength' && currentStep === 'recording';
@@ -746,8 +912,57 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {currentStep === 'instructions' && (
-            <div className={`grid gap-6 ${currentTest.id === 'squat' || currentTest.id === 'calf-raise' || currentTest.id === 'heel-walk' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
-              {/* Sol Sütun - Test Bilgileri ve Genel Talimatlar */}
+            <div className={`grid gap-6 ${(currentTest as any).testMode === 'measurement' ? 'grid-cols-1' : ((currentTest as any).testMode === 'response' || ['squat', 'calf-raise', 'heel-walk', 'ankle-dorsiflexion-rom', 'ankle-plantarflexion-rom'].includes(currentTest.id) ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1')}`}>
+              {/* Sol Sütun - Nörodinamik Testler için (Test Bilgileri + Adım Adım Uygulama) */}
+              {(currentTest as any).testMode === 'response' && (
+              <div className="space-y-4">
+                {/* Test Başlığı */}
+                <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                      {currentTestIndex + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">{currentTest.name}</h3>
+                      <p className="text-gray-600 text-sm">Süre: {currentTest.duration}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 text-sm">{currentTest.description}</p>
+                </div>
+
+                {/* Hedef Bölge */}
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-lg">🎯</span>
+                    <span className="font-bold text-amber-800">Hedef Bölge</span>
+                  </div>
+                  <p className="text-sm text-gray-700">{(currentTest as any).targetArea}</p>
+                </div>
+
+                {/* Adım Adım Uygulama */}
+                <div className="bg-white border-2 border-purple-200 rounded-xl p-4">
+                  <h4 className="font-bold text-purple-700 mb-4 flex items-center gap-2">
+                    <span className="text-lg">📋</span> Adım Adım Uygulama
+                  </h4>
+                  <div className="space-y-3">
+                    {(currentTest as any).detailedSteps?.map((step: any) => (
+                      <div key={step.step} className="flex items-start gap-3">
+                        <div className="w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                          {step.step}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800 text-sm">{step.title}</p>
+                          <p className="text-sm text-gray-600">{step.instruction}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              )}
+
+              {/* Sol Sütun - Test Bilgileri ve Genel Talimatlar (Video testleri için) */}
+              {(currentTest as any).testMode !== 'measurement' && (currentTest as any).testMode !== 'response' && (
               <div className="space-y-4">
                 {/* Test Başlığı */}
                 <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-5 border border-purple-200">
@@ -761,10 +976,12 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                     </div>
                   </div>
                   <p className="text-gray-700 text-base mb-3">{currentTest.description}</p>
+                  {currentTest.videoTips && (
                   <div className="bg-white rounded-lg p-3 border border-purple-100">
                     <p className="text-sm font-semibold text-purple-700 mb-1">📹 Video İpuçları:</p>
                     <p className="text-sm text-gray-600">{currentTest.videoTips}</p>
                   </div>
+                  )}
                 </div>
 
                 {/* Genel Talimatlar */}
@@ -784,7 +1001,9 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                     </p>
                   </div>
                 </div>
+
               </div>
+              )}
 
               {/* Sağ Sütun - Squat Video (Sadece squat testi için) */}
               {currentTest.id === 'squat' && (
@@ -897,41 +1116,485 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                 </div>
               )}
 
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setCurrentStep('recording')}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
-                  >
-                    <Video size={20} />
-                    Kamera ile Kaydet
-                  </button>
-                  <button
-                    onClick={() => setCurrentStep('upload')}
-                    className="flex-1 bg-white border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center justify-center gap-2"
-                  >
-                    <Upload size={20} />
-                    Video Yükle
-                  </button>
+              {/* Sağ Sütun - Dorsifleksiyon EHA Video + Açı Rehberi */}
+              {currentTest.id === 'ankle-dorsiflexion-rom' && (
+                <div className="flex flex-col gap-4">
+                  {/* Video Alanı */}
+                  <div className="bg-white border-2 border-cyan-200 rounded-xl p-4 shadow-lg">
+                    <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                      🦶 Dorsifleksiyon Nasıl Yapılır?
+                    </h4>
+                    <div className="relative bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                      >
+                        <source src="/animations/dorsiflexion.mp4" type="video/mp4" />
+                      </video>
+                      {/* Placeholder */}
+                      <div className="absolute inset-0 flex items-center justify-center text-white">
+                        <div className="text-center p-6">
+                          <p className="text-5xl mb-3">🦶⬆️</p>
+                          <p className="text-lg font-semibold">Ayak Ucunu Yukarı Çek</p>
+                          <p className="text-sm opacity-70 mt-2">Video buraya eklenecek</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 text-center mt-3">
+                      Video otomatik olarak tekrar eder
+                    </p>
+                  </div>
+                  
+                  {/* Açı Rehberi */}
+                  <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-cyan-200 rounded-xl p-4">
+                    <h4 className="font-bold text-cyan-700 mb-3 flex items-center gap-2">
+                      <span className="text-xl">📐</span> Açı Rehberi
+                    </h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-green-500 rounded flex items-center justify-center text-white font-bold text-sm">20°+</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-green-600">Normal</span>
+                          <span className="text-sm text-gray-600 ml-2">Ayak ucu rahatça yukarı çıkıyor</span>
+                        </div>
+                        <span className="text-xl">✅</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-yellow-500 rounded flex items-center justify-center text-white font-bold text-sm">10-20°</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-yellow-600">Hafif Kısıtlı</span>
+                          <span className="text-sm text-gray-600 ml-2">Biraz yukarı çıkıyor</span>
+                        </div>
+                        <span className="text-xl">⚠️</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-red-500 rounded flex items-center justify-center text-white font-bold text-sm">&lt;10°</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-red-600">Kısıtlı</span>
+                          <span className="text-sm text-gray-600 ml-2">Çok az hareket</span>
+                        </div>
+                        <span className="text-xl">❌</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex gap-3">
-                  {currentTestIndex < config.tests.length - 1 ? (
-                    <button
-                      onClick={skipTest}
-                      className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
-                    >
-                      Bu Testi Atla
-                    </button>
-                  ) : (
-                    <button
-                      onClick={goToCompleted}
-                      className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
-                    >
-                      {completedTestsCount > 0 ? 'Testleri Tamamla' : 'Bu Testi Atla'}
-                    </button>
-                  )}
+              )}
+
+              {/* Sağ Sütun - Plantarfleksiyon EHA Video + Açı Rehberi */}
+              {currentTest.id === 'ankle-plantarflexion-rom' && (
+                <div className="flex flex-col gap-4">
+                  {/* Video Alanı */}
+                  <div className="bg-white border-2 border-cyan-200 rounded-xl p-4 shadow-lg">
+                    <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                      🦶 Plantarfleksiyon Nasıl Yapılır?
+                    </h4>
+                    <div className="relative bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                      >
+                        <source src="/animations/plantarflexion.mp4" type="video/mp4" />
+                      </video>
+                      {/* Placeholder */}
+                      <div className="absolute inset-0 flex items-center justify-center text-white">
+                        <div className="text-center p-6">
+                          <p className="text-5xl mb-3">🦶⬇️</p>
+                          <p className="text-lg font-semibold">Ayak Ucunu Aşağı Uzat</p>
+                          <p className="text-sm opacity-70 mt-2">Video buraya eklenecek</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 text-center mt-3">
+                      Video otomatik olarak tekrar eder
+                    </p>
+                  </div>
+                  
+                  {/* Açı Rehberi */}
+                  <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-cyan-200 rounded-xl p-4">
+                    <h4 className="font-bold text-cyan-700 mb-3 flex items-center gap-2">
+                      <span className="text-xl">📐</span> Açı Rehberi
+                    </h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-green-500 rounded flex items-center justify-center text-white font-bold text-sm">40°+</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-green-600">Normal</span>
+                          <span className="text-sm text-gray-600 ml-2">Ayak ucu tam uzanıyor</span>
+                        </div>
+                        <span className="text-xl">✅</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-yellow-500 rounded flex items-center justify-center text-white font-bold text-sm">30-40°</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-yellow-600">Hafif Kısıtlı</span>
+                          <span className="text-sm text-gray-600 ml-2">Biraz uzanıyor</span>
+                        </div>
+                        <span className="text-xl">⚠️</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                        <div className="w-14 h-10 bg-red-500 rounded flex items-center justify-center text-white font-bold text-sm">&lt;30°</div>
+                        <div className="flex-1">
+                          <span className="font-semibold text-red-600">Kısıtlı</span>
+                          <span className="text-sm text-gray-600 ml-2">Az uzanıyor</span>
+                        </div>
+                        <span className="text-xl">❌</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Sağ Sütun - Nörodinamik Testler için Video + Yanıt Seçenekleri */}
+              {(currentTest as any).testMode === 'response' && (
+                <div className="flex flex-col gap-4">
+                  {/* Video Alanı */}
+                  <div className="bg-white border-2 border-purple-200 rounded-xl p-4 shadow-lg">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 text-center">
+                      🎥 Nasıl Yapılır?
+                    </h4>
+                    <div className="relative bg-gradient-to-br from-purple-900 to-indigo-900 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                      >
+                        <source src={`/animations/${currentTest.id}.mp4`} type="video/mp4" />
+                      </video>
+                      {/* Placeholder */}
+                      <div className="absolute inset-0 flex items-center justify-center text-white">
+                        <div className="text-center p-6">
+                          <p className="text-5xl mb-3">🦵⬆️</p>
+                          <p className="text-lg font-semibold">Bacak Kaldırma + Ayak Hareketi</p>
+                          <p className="text-sm opacity-70 mt-2">Video buraya eklenecek</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Yanıt Seçenekleri */}
+                  <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-300 rounded-xl p-4">
+                    <h4 className="font-bold text-purple-700 mb-3 text-center">
+                      🤔 Testi yaptıktan sonra ne hissettiniz?
+                    </h4>
+                    <div className="space-y-2">
+                      {(currentTest as any).responseOptions?.map((option: any) => (
+                        <button
+                          key={option.id}
+                          onClick={() => {
+                            setNeurodynamicResponses(prev => ({
+                              ...prev,
+                              [currentTest.id]: {
+                                responseId: option.id,
+                                result: option.result,
+                                description: option.description,
+                                color: option.color,
+                              }
+                            }));
+                          }}
+                          className={`w-full p-3 rounded-lg border-2 text-left transition-all ${
+                            neurodynamicResponses[currentTest.id]?.responseId === option.id
+                              ? 'border-purple-500 bg-white shadow-md'
+                              : 'border-gray-200 bg-white hover:border-purple-300'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl">{option.icon}</span>
+                            <span className="font-medium text-gray-800">{option.label}</span>
+                            {neurodynamicResponses[currentTest.id]?.responseId === option.id && (
+                              <CheckCircle2 size={20} className="text-purple-600 ml-auto" />
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Sonuç Açıklaması */}
+                    {neurodynamicResponses[currentTest.id] && (
+                      <div 
+                        className="mt-3 p-3 rounded-lg text-sm"
+                        style={{ 
+                          backgroundColor: neurodynamicResponses[currentTest.id].color + '20',
+                          borderLeft: `4px solid ${neurodynamicResponses[currentTest.id].color}`
+                        }}
+                      >
+                        <p className="text-gray-700">{neurodynamicResponses[currentTest.id].description}</p>
+                      </div>
+                    )}
+
+                    {/* Butonlar */}
+                    <div className="flex gap-2 mt-4">
+                      <button
+                        onClick={() => {
+                          if (neurodynamicResponses[currentTest.id]) {
+                            if (currentTestIndex < filteredTests.length - 1) {
+                              setCurrentTestIndex(currentTestIndex + 1);
+                            } else {
+                              goToCompleted();
+                            }
+                          }
+                        }}
+                        disabled={!neurodynamicResponses[currentTest.id]}
+                        className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        <CheckCircle2 size={18} />
+                        {currentTestIndex < filteredTests.length - 1 ? 'Kaydet ve İlerle' : 'Tamamla'}
+                      </button>
+                      <button
+                        onClick={skipTest}
+                        className="px-5 bg-white border-2 border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50 transition"
+                      >
+                        Atla
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Ölçüm bazlı testler için özel UI */}
+              {(currentTest as any).testMode === 'measurement' ? (
+                <div className="lg:col-span-2">
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Sol: Video/Görsel Alanı + Talimatlar */}
+                    <div className="space-y-4">
+                      {/* Video/Görsel Alanı */}
+                      <div className="bg-white border-2 border-purple-200 rounded-xl p-4 shadow-lg">
+                        <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                          🎥 Diz-Duvar Mesafesi Testi
+                        </h4>
+                        <div className="relative bg-gradient-to-br from-purple-900 to-blue-900 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                          <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-contain absolute inset-0"
+                            style={{ display: 'none' }} // Video eklenene kadar gizli
+                          >
+                            <source src="/animations/knee-wall-test.mp4" type="video/mp4" />
+                          </video>
+                          {/* Video yoksa placeholder */}
+                          <div className="text-center text-white p-6">
+                            <p className="text-5xl mb-3">📏</p>
+                            <p className="text-lg font-semibold">Diz-Duvar Mesafesi Testi</p>
+                            <p className="text-sm opacity-70 mt-2">Video veya görsel buraya eklenecek</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Detaylı Talimatlar */}
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-5 rounded-lg">
+                        <h3 className="font-bold text-base mb-4 text-blue-800">📋 Adım Adım Uygulama</h3>
+                        
+                        <div className="space-y-4">
+                          {/* Adım 1 */}
+                          <div className="flex items-start gap-3">
+                            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            <div>
+                              <p className="font-semibold text-gray-800">Hazırlık</p>
+                              <p className="text-sm text-gray-600">Yüzünü duvara dön. Ayakkabı ve çoraplarını çıkar. Yanına cetvel veya mezura al.</p>
+                            </div>
+                          </div>
+                          
+                          {/* Adım 2 */}
+                          <div className="flex items-start gap-3">
+                            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            <div>
+                              <p className="font-semibold text-gray-800">Pozisyon Al</p>
+                              <p className="text-sm text-gray-600">Test edeceğin ayağının <strong>başparmağını duvara değdir</strong>. Diğer ayağını denge için geriye al.</p>
+                            </div>
+                          </div>
+                          
+                          {/* Adım 3 */}
+                          <div className="flex items-start gap-3">
+                            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            <div>
+                              <p className="font-semibold text-gray-800">Hareketi Yap</p>
+                              <p className="text-sm text-gray-600"><strong>Topuğunu yerden kaldırmadan</strong> dizini bükerek duvara değdirmeye çalış. Kolay gelirse ayağı geriye kaydır.</p>
+                            </div>
+                          </div>
+                          
+                          {/* Adım 4 */}
+                          <div className="flex items-start gap-3">
+                            <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                            <div>
+                              <p className="font-semibold text-gray-800">Ölç ve Kaydet</p>
+                              <p className="text-sm text-gray-600">Topuğun kalkmadan dizin değebildiği son noktada dur. <strong>Parmak ucu - duvar mesafesini</strong> cetvel ile ölç.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
+                          <p className="text-sm text-yellow-800">
+                            <strong>⚠️ Dikkat:</strong> Topuğun yerden kalkarsa, ayağını biraz duvara yaklaştır ve tekrar dene.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sağ: Ölçüm Girişi */}
+                    <div className="bg-white rounded-2xl p-6 border-2 border-green-200 shadow-lg h-fit">
+                      <h4 className="text-lg font-bold text-gray-800 mb-5">📏 Ölçüm Sonuçlarını Gir</h4>
+                      
+                      <div className="space-y-4">
+                        {/* Sol Ayak */}
+                        <div className="bg-gray-50 rounded-xl p-4">
+                          <label className="block text-sm font-semibold text-gray-600 mb-2">
+                            🦶 Sol {(currentTest as any).measurementLabel || 'Ayak Bileği'}
+                          </label>
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="number"
+                              min="0"
+                              max={(currentTest as any).measurementUnit === '°' ? 60 : 25}
+                              step={(currentTest as any).measurementUnit === '°' ? 1 : 0.5}
+                              placeholder="0"
+                              value={measurements[currentTest.id]?.left || ''}
+                              onChange={(e) => setMeasurements(prev => ({
+                                ...prev,
+                                [currentTest.id]: { ...prev[currentTest.id], left: e.target.value }
+                              }))}
+                              className="w-24 px-4 py-3 border-2 border-gray-300 rounded-xl text-2xl font-bold text-center focus:outline-none focus:border-purple-500"
+                            />
+                            <span className="text-xl text-gray-500 font-semibold">{(currentTest as any).measurementUnit || 'cm'}</span>
+                            {measurementResults[currentTest.id]?.left && (
+                              <span className="text-2xl">{measurementResults[currentTest.id].left!.icon}</span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Sağ Ayak */}
+                        <div className="bg-gray-50 rounded-xl p-4">
+                          <label className="block text-sm font-semibold text-gray-600 mb-2">
+                            🦶 Sağ {(currentTest as any).measurementLabel || 'Ayak Bileği'}
+                          </label>
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="number"
+                              min="0"
+                              max={(currentTest as any).measurementUnit === '°' ? 60 : 25}
+                              step={(currentTest as any).measurementUnit === '°' ? 1 : 0.5}
+                              placeholder="0"
+                              value={measurements[currentTest.id]?.right || ''}
+                              onChange={(e) => setMeasurements(prev => ({
+                                ...prev,
+                                [currentTest.id]: { ...prev[currentTest.id], right: e.target.value }
+                              }))}
+                              className="w-24 px-4 py-3 border-2 border-gray-300 rounded-xl text-2xl font-bold text-center focus:outline-none focus:border-purple-500"
+                            />
+                            <span className="text-xl text-gray-500 font-semibold">{(currentTest as any).measurementUnit || 'cm'}</span>
+                            {measurementResults[currentTest.id]?.right && (
+                              <span className="text-2xl">{measurementResults[currentTest.id].right!.icon}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sonuç Gösterimi */}
+                      {(measurementResults[currentTest.id]?.left || measurementResults[currentTest.id]?.right) && (
+                        <div className="mt-4 space-y-2">
+                          {measurementResults[currentTest.id]?.left && (
+                            <div className="p-3 rounded-lg" style={{ backgroundColor: measurementResults[currentTest.id].left!.color + '15' }}>
+                              <span className="font-semibold" style={{ color: measurementResults[currentTest.id].left!.color }}>
+                                Sol: {measurementResults[currentTest.id].left!.label} - {measurementResults[currentTest.id].left!.description}
+                              </span>
+                            </div>
+                          )}
+                          {measurementResults[currentTest.id]?.right && (
+                            <div className="p-3 rounded-lg" style={{ backgroundColor: measurementResults[currentTest.id].right!.color + '15' }}>
+                              <span className="font-semibold" style={{ color: measurementResults[currentTest.id].right!.color }}>
+                                Sağ: {measurementResults[currentTest.id].right!.label} - {measurementResults[currentTest.id].right!.description}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Değerlendirme Skalası */}
+                      <div className="mt-5 bg-gray-100 rounded-lg p-3">
+                        <p className="text-xs font-semibold text-gray-600 mb-2">📊 Değerlendirme:</p>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-500 rounded-full"></span> &lt;5cm Kısıtlı</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-yellow-500 rounded-full"></span> 5-9cm Hafif</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-500 rounded-full"></span> 10+cm Normal</span>
+                        </div>
+                      </div>
+
+                      {/* Butonlar */}
+                      <div className="mt-5 flex gap-3">
+                        <button
+                          onClick={() => {
+                            const leftValue = parseFloat(measurements[currentTest.id]?.left || '0');
+                            const rightValue = parseFloat(measurements[currentTest.id]?.right || '0');
+                            const criteria = (currentTest as any).evaluationCriteria;
+                            
+                            if (criteria && (leftValue > 0 || rightValue > 0)) {
+                              const results: { left?: MeasurementResult; right?: MeasurementResult } = {};
+                              if (leftValue > 0) results.left = evaluateMeasurement(leftValue, criteria);
+                              if (rightValue > 0) results.right = evaluateMeasurement(rightValue, criteria);
+                              setMeasurementResults(prev => ({ ...prev, [currentTest.id]: results }));
+                            }
+                          }}
+                          disabled={!measurements[currentTest.id]?.left && !measurements[currentTest.id]?.right}
+                          className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50"
+                        >
+                          ✓ Değerlendir
+                        </button>
+                        <button
+                          onClick={currentTestIndex < filteredTests.length - 1 ? () => { setCurrentTestIndex(currentTestIndex + 1); setCurrentStep('instructions'); } : goToCompleted}
+                          className="px-5 bg-purple-100 text-purple-600 py-3 rounded-xl font-semibold hover:bg-purple-200 transition"
+                        >
+                          {currentTestIndex < filteredTests.length - 1 ? 'İleri →' : 'Bitir'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (currentTest as any).testMode !== 'response' ? (
+                /* Video bazlı testler için normal butonlar */
+                <div className="flex flex-col gap-3">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep('recording')}
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition flex items-center justify-center gap-2"
+                    >
+                      <Video size={20} />
+                      Kamera ile Kaydet
+                    </button>
+                    <button
+                      onClick={() => setCurrentStep('upload')}
+                      className="flex-1 bg-white border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition flex items-center justify-center gap-2"
+                    >
+                      <Upload size={20} />
+                      Video Yükle
+                    </button>
+                  </div>
+                  <div className="flex gap-3">
+                    {currentTestIndex < filteredTests.length - 1 ? (
+                      <button
+                        onClick={skipTest}
+                        className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
+                      >
+                        Bu Testi Atla
+                      </button>
+                    ) : (
+                      <button
+                        onClick={goToCompleted}
+                        className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
+                      >
+                        {completedTestsCount > 0 ? 'Testleri Tamamla' : 'Bu Testi Atla'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : null}
             </div>
           )}
 
@@ -1114,6 +1777,36 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                   ))}
                 </ul>
               </div>
+
+              {/* EHA Testleri için Açı Rehberi */}
+              {(currentTest as any).angleGuide && (
+                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 text-blue-700 mb-3">
+                    <span className="text-xl">📐</span>
+                    <span className="font-semibold">{(currentTest as any).angleGuide.title}</span>
+                  </div>
+                  <div className="space-y-2">
+                    {(currentTest as any).angleGuide.ranges.map((range: any, idx: number) => (
+                      <div 
+                        key={idx} 
+                        className="flex items-center gap-3 p-3 rounded-lg"
+                        style={{ backgroundColor: range.color + '15' }}
+                      >
+                        <div 
+                          className="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-white text-sm"
+                          style={{ backgroundColor: range.color }}
+                        >
+                          {range.angle}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold" style={{ color: range.color }}>{range.status}</div>
+                          <div className="text-sm text-gray-600">{range.description}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="flex flex-col gap-3">
                 <div className="flex gap-3">

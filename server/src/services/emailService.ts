@@ -17,19 +17,18 @@ const createTransporter = () => {
     return null;
   }
 
-  // Gmail STARTTLS (587), IPv4 zorlamalı, timeout ve TLS gevşek (kurumsal ağlar için)
+  // Gmail STARTTLS (587), IPv4 zorlamalı, kısa timeout
   return nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
     port: 587,
     secure: false, // STARTTLS
     requireTLS: true,
-    connectionTimeout: 20000,
-    greetingTimeout: 15000,
-    socketTimeout: 20000,
+    connectionTimeout: 5000,  // 5 saniye - daha kısa
+    greetingTimeout: 5000,    // 5 saniye
+    socketTimeout: 8000,      // 8 saniye
     tls: {
       rejectUnauthorized: false,
-      // minVersion: 'TLSv1' // gerekirse açılabilir
     },
     family: 4, // IPv4 zorla
     auth: {

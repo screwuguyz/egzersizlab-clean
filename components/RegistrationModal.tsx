@@ -132,6 +132,25 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose, onSucces
                 setLoading(true);
 
                 try {
+                  // Telefon numarası validasyonu (opsiyonel ama girilmişse geçerli olmalı)
+                  if (formData.phone && formData.phone.trim() !== '') {
+                    const phone = formData.phone.trim();
+                    // Sadece rakam, +, -, boşluk ve parantez kabul edilir
+                    if (!/^[0-9+\-\s()]+$/.test(phone)) {
+                      setError('Geçerli bir telefon numarası giriniz (sadece rakam, +, -, boşluk kullanabilirsiniz)');
+                      setLoading(false);
+                      return;
+                    }
+                    // Sadece rakamları al ve uzunluk kontrolü yap
+                    const phoneDigits = phone.replace(/\D/g, '');
+                    // Türkiye telefon numarası: en az 10 haneli olmalı
+                    if (phoneDigits.length < 10) {
+                      setError('Telefon numarası en az 10 haneli olmalıdır (örn: 5XX XXX XX XX)');
+                      setLoading(false);
+                      return;
+                    }
+                  }
+
                   // Şifre validasyonu (backend'de de kontrol ediliyor ama frontend'de de kontrol edelim)
                   if (formData.password.length < 8) {
                     setError('Şifre en az 8 karakter olmalıdır');

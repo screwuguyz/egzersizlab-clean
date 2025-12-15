@@ -1149,6 +1149,211 @@ const Dashboard: React.FC = () => {
             >
               👑 Premium Paket
                       </div>
+            
+            {/* Developer: Ağrı Bölgesi Seçici */}
+            <div style={{ 
+              marginTop: '16px', 
+              borderTop: '1px solid rgba(255,255,255,0.3)',
+              paddingTop: '12px'
+            }}>
+              <div 
+                style={{ 
+                  background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                  color: '#fff',
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                  textAlign: 'center',
+                  marginBottom: '8px'
+                }}
+                onClick={() => {
+                  const devPanel = document.getElementById('dev-pain-areas');
+                  if (devPanel) {
+                    devPanel.style.display = devPanel.style.display === 'none' ? 'block' : 'none';
+                  }
+                }}
+                title="Geliştirici: Ağrı bölgesi seçici"
+              >
+                🔧 Bölge Seç
+              </div>
+              <div 
+                id="dev-pain-areas"
+                style={{ 
+                  display: 'none',
+                  background: '#fff',
+                  borderRadius: '8px',
+                  padding: '8px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  maxHeight: '300px',
+                  overflowY: 'auto',
+                  fontSize: '10px'
+                }}
+              >
+                <div style={{ fontWeight: 700, marginBottom: '8px', color: '#6366f1' }}>
+                  📍 Hızlı Bölge Seç:
+                </div>
+                {/* Preset bölgeler */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('calf') || a.includes('ankle')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('calf') || a.includes('ankle')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['calf-back-left', 'calf-back-right', 'ankle-front-left', 'ankle-front-right'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    🦵 Baldır + Ayak Bileği
+                  </button>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('knee')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('knee')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['knee-front-left', 'knee-front-right', 'knee-back-left', 'knee-back-right'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    🦿 Diz (Sol + Sağ)
+                  </button>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('lower-back')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('lower-back')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['lower-back'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    🔙 Bel
+                  </button>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('neck')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('neck')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['neck-front', 'neck-back'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    🦒 Boyun
+                  </button>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('shoulder')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('shoulder')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['shoulder-front-left', 'shoulder-front-right', 'shoulder-back-left', 'shoulder-back-right'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    💪 Omuz (Sol + Sağ)
+                  </button>
+                  <button
+                    style={{
+                      padding: '6px 8px',
+                      background: userPainAreas.some(a => a.includes('hip')) ? '#8b5cf6' : '#f3f4f6',
+                      color: userPainAreas.some(a => a.includes('hip')) ? '#fff' : '#374151',
+                      border: 'none',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textAlign: 'left'
+                    }}
+                    onClick={() => {
+                      const areas = ['hip-front', 'hip-back'];
+                      setUserPainAreas(areas);
+                      localStorage.setItem('userPainAreas', JSON.stringify(areas));
+                    }}
+                  >
+                    🍑 Kalça
+                  </button>
+                  <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '4px', paddingTop: '4px' }}>
+                    <button
+                      style={{
+                        padding: '6px 8px',
+                        background: '#ef4444',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '10px',
+                        fontWeight: 600,
+                        width: '100%'
+                      }}
+                      onClick={() => {
+                        setUserPainAreas([]);
+                        localStorage.removeItem('userPainAreas');
+                      }}
+                    >
+                      🗑️ Temizle
+                    </button>
+                  </div>
+                </div>
+                {/* Aktif bölgeler */}
+                {userPainAreas.length > 0 && (
+                  <div style={{ 
+                    marginTop: '8px', 
+                    padding: '6px', 
+                    background: '#f0fdf4', 
+                    borderRadius: '6px',
+                    fontSize: '9px',
+                    color: '#166534'
+                  }}>
+                    <strong>Aktif:</strong> {userPainAreas.join(', ')}
+                  </div>
+                )}
+              </div>
+            </div>
                     </div>
           <div className="top-bar-right">
             {/* Notification Bell */}
