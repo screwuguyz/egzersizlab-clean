@@ -10,13 +10,18 @@ import { Request, Response, NextFunction } from 'express';
 // CORS yapılandırması - Sadece izin verilen origin'lerden istek kabul et
 export const corsConfig = cors({
   origin: (origin, callback) => {
-    // Development'ta tüm localhost portlarına izin ver
+    // Development ve production origin'leri
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
       'http://localhost:3000',
       'http://localhost:3001',
       'http://localhost:3002',
       'http://localhost:5173', // Vite default
+      // Production URLs
+      'https://egzersizlab.com',
+      'https://www.egzersizlab.com',
+      'http://egzersizlab.com',
+      'http://www.egzersizlab.com',
     ];
     
     // Origin yoksa (same-origin request) veya izin verilen listede ise kabul et
