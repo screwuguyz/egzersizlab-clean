@@ -59,9 +59,9 @@ export const protect = async (
 
 // JWT token oluştur
 export const generateToken = (userId: string): string => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_EXPIRE || '7d',
-  });
+  const secret = process.env.JWT_SECRET || 'default-secret-key';
+  const expiresIn = process.env.JWT_EXPIRE || '7d';
+  return jwt.sign({ id: userId }, secret, { expiresIn } as any);
 };
 
 

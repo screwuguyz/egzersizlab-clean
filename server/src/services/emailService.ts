@@ -5,8 +5,6 @@ import nodemailer from 'nodemailer';
  * .env dosyasından SMTP ayarlarını alır
  */
 const createTransporter = () => {
-  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const smtpPort = parseInt(process.env.SMTP_PORT || '587');
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
 
@@ -22,20 +20,12 @@ const createTransporter = () => {
     service: 'gmail',
     host: 'smtp.gmail.com',
     port: 587,
-    secure: false, // STARTTLS
-    requireTLS: true,
-    connectionTimeout: 5000,  // 5 saniye - daha kısa
-    greetingTimeout: 5000,    // 5 saniye
-    socketTimeout: 8000,      // 8 saniye
-    tls: {
-      rejectUnauthorized: false,
-    },
-    family: 4, // IPv4 zorla
+    secure: false,
     auth: {
       user: smtpUser,
       pass: smtpPass,
     },
-  });
+  } as any);
 };
 
 /**
