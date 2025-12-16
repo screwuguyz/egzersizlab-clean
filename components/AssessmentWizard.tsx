@@ -41,7 +41,7 @@ const safetyQuestions: Array<{
   },
   {
     key: 'chronic',
-    question: 'Tanısı konmuş romatolojik veya nörolojik bir hastalığınız var mı?',
+    question: 'Doktor tarafından belirlenen romatolojik veya nörolojik bir sağlık durumunuz var mı?',
     icon: '🧬',
     helper: 'Örn: MS, Ankilozan Spondilit vb.',
   },
@@ -412,7 +412,7 @@ const AssessmentWizard: React.FC<AssessmentWizardProps> = ({ open, onClose, onCo
             <div className="step1-compact">
               <div className="section-header-compact">
                 <h3>Fiziksel Profiliniz</h3>
-                <p>Kişisel bilgileriniz tedavi planınızı şekillendirir</p>
+                <p>Kişisel bilgileriniz egzersiz planınızı şekillendirir</p>
               </div>
               
               {/* Gender + Measurements Row */}

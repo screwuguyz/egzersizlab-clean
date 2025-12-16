@@ -39,7 +39,7 @@ const packages: Package[] = [
     features: [
       'Detaylı anamnez değerlendirmesi',
       'Fizyoterapist tarafından vaka analizi',
-      '4-6 haftalık kişiye özel egzersiz reçetesi',
+      '4-6 haftalık kişiye özel egzersiz programı',
       'Egzersiz videoları ve açıklamaları',
     ],
     notIncluded: ['Takip ve revizyon hizmeti içermez'],

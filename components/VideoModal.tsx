@@ -12,7 +12,7 @@ const VideoModal: React.FC<VideoModalProps> = ({ open, onClose }) => {
 
   // YouTube video ID - bunu kendi videonuzla değiştirin
   // Örnek: https://www.youtube.com/watch?v=VIDEO_ID → VIDEO_ID kısmını alın
-  const youtubeVideoId = 'gC_L9qAHVJ8'; // Fizik tedavi tanıtım videosu
+  const youtubeVideoId = 'gC_L9qAHVJ8'; // EgzersizLab tanıtım videosu
 
   const steps = [
     { icon: '📝', title: 'Değerlendirme', desc: '3 dakikalık form' },

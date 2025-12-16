@@ -40,7 +40,7 @@ const defaultConfig: DashboardConfig = {
   welcome_subtitle: 'Bugün, ağrısız bir yaşam için harika bir başlangıç.',
   cta_title: 'Henüz Vücut Analizinizi Yapmadık',
   cta_description:
-    'Size en uygun tedavi paketini belirleyebilmemiz ve ağrı haritanızı çıkarabilmemiz için 3 dakikalık ücretsiz ön değerlendirmeyi tamamlayın.',
+    'Size en uygun egzersiz paketini belirleyebilmemiz ve ihtiyaç haritanızı çıkarabilmemiz için 3 dakikalık ücretsiz ön değerlendirmeyi tamamlayın.',
   cta_button_text: 'Analizi Başlat',
   cta_duration: 'Yaklaşık 3 dakika sürer',
   video_title: 'Süreci İzleyin',
@@ -194,7 +194,7 @@ const Dashboard: React.FC = () => {
           features: [
             'Detaylı anamnez değerlendirmesi',
             'Fizyoterapist tarafından vaka analizi',
-            '4-6 haftalık kişiye özel egzersiz reçetesi',
+            '4-6 haftalık kişiye özel egzersiz programı',
             'Egzersiz videoları ve açıklamaları',
           ],
           price: '599₺',
@@ -879,7 +879,7 @@ const Dashboard: React.FC = () => {
           font-size: 13px;
           font-weight: 700;
           line-height: 1.2;
-          white-space: normal;
+          white-space: nowrap;
           overflow: visible;
           word-wrap: break-word;
           hyphens: auto;
@@ -1576,7 +1576,7 @@ const Dashboard: React.FC = () => {
             <>
               {/* Klinik Testler Bölümü */}
               <div className="clinical-tests-section">
-                <div className="clinical-tests-title">🔬 Klinik Testler</div>
+                <div className="clinical-tests-title">📋 Öz-Değerlendirme Testleri</div>
                 <div className="clinical-tests-buttons">
                   <button 
                     className="clinical-test-btn"
@@ -1614,7 +1614,7 @@ const Dashboard: React.FC = () => {
                   <button 
                     className="clinical-test-btn"
                     onClick={() => setClinicalTestType('neurodynamic')}
-                    title="Sinir germe testleri - Ağrı kas kaynaklı mı yoksa sinir sıkışması mı (Fıtık/Siyatik)?"
+                    title="Sinir hassasiyeti kontrolü - Kas ve sinir hassasiyetini ayırt etmenize yardımcı olur"
                   >
                     <span className="test-btn-icon">🧠</span>
                     <div className="test-btn-content">

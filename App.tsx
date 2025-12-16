@@ -235,8 +235,8 @@ function App() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
             <div>
-              <div className="text-4xl font-bold text-teal-500 mb-2">%100</div>
-              <div className="text-gray-500 text-sm font-medium uppercase tracking-wider">Kişiye Özel Analiz</div>
+              <div className="text-4xl font-bold text-teal-500 mb-2">1:1</div>
+              <div className="text-gray-500 text-sm font-medium uppercase tracking-wider">Kişiye Özel Program</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-pink-500 mb-2">7/24</div>
@@ -244,7 +244,7 @@ function App() {
             </div>
             <div>
               <div className="text-4xl font-bold text-blue-500 mb-2">Kanıta Dayalı</div>
-              <div className="text-gray-500 text-sm font-medium uppercase tracking-wider">Bilimsel Egzersiz Reçetesi</div>
+              <div className="text-gray-500 text-sm font-medium uppercase tracking-wider">Bilimsel Egzersiz Programı</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-orange-500 mb-2">Birebir</div>
@@ -502,8 +502,17 @@ function App() {
             </div>
           </div>
 
+          {/* Yasal Uyarı */}
+          <div className="border-t border-gray-800 pt-6 pb-4">
+            <p className="text-xs text-gray-500 text-center leading-relaxed max-w-3xl mx-auto">
+              ⚠️ <strong>Yasal Uyarı:</strong> Bu site tıbbi tanı veya tedavi hizmeti sunmamaktadır. 
+              Sunulan öz-değerlendirme testleri ve içerikler yalnızca kişisel farkındalık ve bilgilendirme amaçlıdır. 
+              Kesin değerlendirme için bir sağlık profesyoneline danışmanız önerilir.
+            </p>
+          </div>
+
           {/* Alt Kısım */}
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+          <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-sm gap-4">
             <div className="flex flex-col md:flex-row items-center gap-2">
               <p className="text-gray-400">© 2024 <span className="text-white font-semibold">EgzersizLab</span>. Tüm hakları saklıdır.</p>
             </div>

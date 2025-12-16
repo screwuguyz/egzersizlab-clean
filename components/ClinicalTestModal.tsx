@@ -12,7 +12,7 @@ type TestStep = 'instructions' | 'recording' | 'upload' | 'review' | 'completed'
 
 const testConfigs = {
   'muscle-strength': {
-    title: 'Kas Kuvveti Değerlendirmesi',
+    title: 'Kas Kuvveti Öz-Değerlendirmesi',
     icon: '💪',
     instructions: [
       'Kamerayı yan profilden konumlandırın (vücudunuzun yarısı görünsün)',
@@ -134,7 +134,7 @@ const testConfigs = {
     ],
   },
   flexibility: {
-    title: 'Esneklik Testleri',
+    title: 'Esneklik Öz-Değerlendirmesi',
     icon: '📏',
     instructions: [
       'Her testi dikkatli bir şekilde uygulayın',
@@ -246,7 +246,7 @@ const testConfigs = {
     ],
   },
   neurodynamic: {
-    title: 'Nörodinamik Testler (Sinir Germe)',
+    title: 'Sinir Hassasiyeti Öz-Değerlendirmesi',
     icon: '🧠',
     instructions: [
       'Testi yavaş ve kontrollü yapın',
@@ -257,7 +257,7 @@ const testConfigs = {
       {
         id: 'tibial-nerve-test',
         name: 'Tibial Sinir Testi',
-        description: 'Baldır arkası, topuk ve ayak tabanı ağrıları için. Tarsal Tünel Sendromu veya topuk dikeni sanılan sinir ağrılarını tespit eder.',
+        description: 'Baldır arkası, topuk ve ayak tabanı bölgesindeki hassasiyeti kontrol etmenizi sağlar.',
         duration: '30 saniye',
         testMode: 'response',
         relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
@@ -270,15 +270,15 @@ const testConfigs = {
           { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
         ],
         responseOptions: [
-          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
-          { id: 'nerve', label: 'Elektrik çarpması / Karıncalanma oldu', icon: '⚡', result: 'Pozitif', description: 'Tibial sinir hassasiyeti tespit edildi. Fizyoterapist değerlendirmesi önerilir.', color: '#f59e0b' },
-          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Normal', description: 'Normal kas esnekliği görünüyor.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Karıncalanma oldu', icon: '⚡', result: 'Değerlendirme Önerilir', description: 'Sinir hassasiyeti olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bu bulgu önemli olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#ef4444' },
         ],
       },
       {
         id: 'peroneal-nerve-test',
         name: 'Peroneal (Fibular) Sinir Testi',
-        description: 'Kaval kemiği önü, ayak bileği ön-dış kısmı ve ayak sırtı ağrıları için. Düşük ayak başlangıcı veya Shin Splints ile karışan sinir sorunlarını tespit eder.',
+        description: 'Kaval kemiği önü, ayak bileği ve ayak sırtı bölgesindeki hassasiyeti kontrol etmenizi sağlar.',
         duration: '30 saniye',
         testMode: 'response',
         relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
@@ -291,9 +291,9 @@ const testConfigs = {
           { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
         ],
         responseOptions: [
-          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
-          { id: 'nerve', label: 'Elektrik çarpması / Uyuşma oldu', icon: '⚡', result: 'Pozitif', description: 'Peroneal sinir hassasiyeti tespit edildi. Fizyoterapist değerlendirmesi önerilir.', color: '#f59e0b' },
-          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Normal', description: 'Normal kas esnekliği görünüyor.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Uyuşma oldu', icon: '⚡', result: 'Değerlendirme Önerilir', description: 'Sinir hassasiyeti olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bu bulgu önemli olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#ef4444' },
         ],
       },
       {
@@ -312,28 +312,10 @@ const testConfigs = {
           { step: 5, title: 'Bekle ve Hisset', instruction: '5 saniye bu pozisyonda kal. Ne hissediyorsun?' },
         ],
         responseOptions: [
-          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Negatif', description: 'Normal kas esnekliği. Sinir sorunu yok.', color: '#10b981' },
-          { id: 'nerve', label: 'Elektrik çarpması / Yanma oldu', icon: '⚡', result: 'Pozitif', description: 'Sural sinir hassasiyeti tespit edildi. Kronik burkulma sonrası sinir hasarı olabilir.', color: '#f59e0b' },
-          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bel fıtığı riski olabilir. Doktor kontrolü önerilir.', color: '#ef4444' },
+          { id: 'normal', label: 'Sadece gerilme hissettim', icon: '✅', result: 'Normal', description: 'Normal kas esnekliği görünüyor.', color: '#10b981' },
+          { id: 'nerve', label: 'Elektrik çarpması / Yanma oldu', icon: '⚡', result: 'Değerlendirme Önerilir', description: 'Sinir hassasiyeti olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#f59e0b' },
+          { id: 'back', label: 'Belimde ağrı oldu', icon: '🔴', result: 'Dikkat', description: 'Bu bulgu önemli olabilir. Bir sağlık profesyoneline danışmanız önerilir.', color: '#ef4444' },
         ],
-      },
-    ],
-  },
-  balance: {
-    title: 'Denge Testleri',
-    icon: '⚖️',
-    instructions: [
-      'Güvenli bir alanda yapın',
-      'Yanınızda destek olsun',
-    ],
-    tests: [
-      {
-        id: 'tandem',
-        name: 'Tandem Yürüyüş',
-        description: 'Ayaklar bir önde bir arkada, düz çizgide yürüyün',
-        duration: '30 saniye',
-        videoTips: 'Ardından çekin, yürüyüşü görebilmeli',
-        evaluationPoints: ['Dengede kalabiliyor mu?', 'Sallanıyor mu?', 'Kaç adım yürüyebildi?'],
       },
     ],
   },
@@ -341,17 +323,103 @@ const testConfigs = {
     title: 'Hareket Analizi',
     icon: '🩺',
     instructions: [
-      'Günlük hareketleri yapın',
-      'Doğal hareket edin',
+      'Günlük hareketleri doğal şekilde yapın',
+      'Kamerayı yan profilden konumlandırın',
+      'Hareketi rahat ve doğal yapın',
+      'Ağrı hissederseniz durun',
     ],
     tests: [
       {
         id: 'squat-daily',
-        name: 'Günlük Çömelme',
-        description: 'Yerden bir şey alır gibi çömelin',
+        name: 'Günlük Çömelme Analizi',
+        description: 'Günlük hayatta yerden bir şey alırken nasıl çömeldiğinizi analiz eder. Bel ve diz biyomekaniğinizi değerlendirir.',
         duration: '20 saniye',
-        videoTips: 'Yandan çekin, tüm hareket görünmeli',
-        evaluationPoints: ['Bel eğiliyor mu?', 'Dizler içe mi?', 'Asimetri var mı?'],
+        videoTips: 'Yan profilden çekin, tüm vücut görünmeli',
+        instructions: [
+          'Kamerayı yan profilden konumlandırın',
+          'Rahat kıyafetler giyin',
+          'Doğal şekilde çömelin, zorlamayın',
+          'Hareketi 3-5 kez tekrarlayın',
+        ],
+        detailedInstructions: {
+          startPosition: {
+            title: '1. Başlangıç Pozisyonu',
+            items: [
+              { label: 'Duruş', text: 'Ayakta dik durun, ayaklar omuz genişliğinde açık olsun.' },
+              { label: 'Kollar', text: 'Kollarınız rahat yanlarda dursun.' },
+            ],
+          },
+          movementDown: {
+            title: '2. Hareket (Çömelme)',
+            items: [
+              { label: 'Doğal Hareket', text: 'Sanki yerden bir şey alacakmışsınız gibi doğal şekilde çömelin.' },
+              { label: 'Dikkat', text: 'Nasıl çömeldiğinizi düşünmeyin, günlük hayattaki gibi yapın.' },
+            ],
+          },
+          movementUp: {
+            title: '3. Kalkış',
+            items: [
+              { label: 'Doğal Kalkış', text: 'Doğal şekilde ayağa kalkın.' },
+              { label: 'Tekrar', text: 'Hareketi 3-5 kez tekrarlayın.' },
+            ],
+          },
+        },
+        evaluationPoints: ['Bel aşırı eğiliyor mu?', 'Dizler içe çöküyor mu?', 'Sağ-sol asimetri var mı?', 'Topuklar kalkıyor mu?'],
+      },
+    ],
+  },
+  balance: {
+    title: 'Denge Öz-Değerlendirmesi',
+    icon: '⚖️',
+    instructions: [
+      'Düşmemek için yanınızda tutunabileceğiniz bir yer olsun',
+      'Düz ve kaymayan bir zeminde yapın',
+      'Çıplak ayakla test yapın',
+      'Telefonu elinize almadan kullanabileceksiniz - sesli sayaç size yardımcı olacak',
+    ],
+    tests: [
+      {
+        id: 'single-leg-stance-eyes-open',
+        name: 'Tek Ayak Denge Testi (Gözler Açık)',
+        description: 'Görsel sistem yardımıyla tek ayak üzerinde ne kadar süre dengede kalabildiğinizi ölçer.',
+        duration: 'Maksimum 60 saniye',
+        testMode: 'balance-timer',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        targetArea: 'Ayak bileği ve baldır propriosepsiyonu',
+        testVariant: 'eyes-open',
+        detailedSteps: [
+          { step: 1, title: 'Hazırlık', instruction: 'Yanınızda tutunabileceğiniz bir masa veya duvar olsun. Çıplak ayakla, düz zeminde durun.' },
+          { step: 2, title: 'Pozisyon', instruction: 'Ellerinizi belinize koyun. Test edeceğiniz (ağrılı) ayağınızın üzerinde durun.' },
+          { step: 3, title: 'Başlangıç', instruction: 'Diğer dizinizi bükerek ayağınızı yerden kesin. Gözleriniz AÇIK kalsın, karşıda sabit bir noktaya bakın.' },
+          { step: 4, title: 'Test', instruction: '"Başlat" butonuna basın. Telefon sesli olarak saniyeleri sayacak. Dengenizi kaybettiğinizde duyduğunuz son sayıyı hatırlayın.' },
+        ],
+        evaluationCriteria: {
+          good: { min: 30, label: 'İyi Denge', color: 'green', icon: '✅', description: 'Denge performansınız iyi görünüyor.' },
+          moderate: { min: 15, max: 29, label: 'Orta Seviye', color: 'yellow', icon: '⚠️', description: 'Denge egzersizleri faydalı olabilir.' },
+          poor: { min: 0, max: 14, label: 'Geliştirilebilir', color: 'red', icon: '❌', description: 'Denge egzersizlerine odaklanmanız önerilir. Profesyonel değerlendirme faydalı olabilir.' },
+        },
+      },
+      {
+        id: 'single-leg-stance-eyes-closed',
+        name: 'Tek Ayak Denge Testi (Gözler Kapalı)',
+        description: 'Görsel destek olmadan denge performansınızı ölçer. Bu test, ayak bileği ve baldır kaslarınızın denge katkısını değerlendirmenize yardımcı olur.',
+        duration: 'Maksimum 30 saniye',
+        testMode: 'balance-timer',
+        relevantBodyAreas: ['ankle-front-left', 'ankle-front-right', 'ankle-back-left', 'ankle-back-right', 'calf-back-left', 'calf-back-right'],
+        targetArea: 'Ayak bileği propriosepsiyonu (görsel sistem olmadan)',
+        testVariant: 'eyes-closed',
+        isCritical: true,
+        detailedSteps: [
+          { step: 1, title: '⚠️ Güvenlik', instruction: 'Bu test daha zordur! Mutlaka yanınızda tutunabileceğiniz sağlam bir yer olsun.' },
+          { step: 2, title: 'Pozisyon', instruction: 'Ellerinizi belinize koyun. Test edeceğiniz (ağrılı) ayağınızın üzerinde durun.' },
+          { step: 3, title: 'Başlangıç', instruction: 'Diğer dizinizi bükerek ayağınızı yerden kesin. Hazır olduğunuzda "Başlat" butonuna basın.' },
+          { step: 4, title: 'Gözleri Kapatma', instruction: '5 saniyelik geri sayım bitince GÖZLERİNİZİ KAPATIN. Telefon sesli sayacak. Dengenizi kaybedince gözlerinizi açın ve duyduğunuz son sayıyı hatırlayın.' },
+        ],
+        evaluationCriteria: {
+          good: { min: 15, label: 'İyi Denge', color: 'green', icon: '✅', description: 'Görsel destek olmadan da denge performansınız iyi.' },
+          moderate: { min: 7, max: 14, label: 'Orta Seviye', color: 'yellow', icon: '⚠️', description: 'Denge egzersizleri faydalı olabilir.' },
+          poor: { min: 0, max: 6, label: 'Geliştirilebilir', color: 'red', icon: '❌', description: 'Denge egzersizlerine odaklanmanız önerilir. Profesyonel değerlendirme faydalı olabilir.' },
+        },
       },
     ],
   },
@@ -393,6 +461,33 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
   
   // Nörodinamik test yanıtları
   const [neurodynamicResponses, setNeurodynamicResponses] = useState<Record<string, { responseId: string; result: string; description: string; color: string }>>({});
+  
+  // Denge testi state'leri
+  const [balanceTestState, setBalanceTestState] = useState<'idle' | 'countdown' | 'running' | 'finished'>('idle');
+  const [balanceCountdown, setBalanceCountdown] = useState(5);
+  const [balanceTimer, setBalanceTimer] = useState(0);
+  const [balanceResults, setBalanceResults] = useState<Record<string, { seconds: number; result: MeasurementResult }>>({});
+  const [selectedBalanceTime, setSelectedBalanceTime] = useState<number | null>(null);
+  const balanceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const speechSynthRef = useRef<SpeechSynthesisUtterance | null>(null);
+  
+  // Test değiştiğinde denge sayacını sıfırla
+  React.useEffect(() => {
+    // Sayacı durdur
+    if (balanceTimerRef.current) {
+      clearInterval(balanceTimerRef.current);
+      balanceTimerRef.current = null;
+    }
+    // Sesi durdur
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    // State'leri sıfırla
+    setBalanceTestState('idle');
+    setBalanceCountdown(5);
+    setBalanceTimer(0);
+    setSelectedBalanceTime(null);
+  }, [currentTestIndex]);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -875,6 +970,118 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
     setCurrentStep('completed');
   };
 
+  // Denge testi fonksiyonları
+  const speakNumber = (num: number) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(num.toString());
+      utterance.lang = 'tr-TR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      speechSynthRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const speakText = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'tr-TR';
+      utterance.rate = 0.8;
+      speechSynthRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const startBalanceTest = () => {
+    setBalanceTestState('countdown');
+    setBalanceCountdown(5);
+    setBalanceTimer(0);
+    setSelectedBalanceTime(null);
+    
+    // 5 saniye geri sayım
+    let countdown = 5;
+    speakText('Hazırlanın');
+    
+    const countdownInterval = setInterval(() => {
+      countdown--;
+      setBalanceCountdown(countdown);
+      
+      if (countdown > 0) {
+        speakNumber(countdown);
+      }
+      
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        speakText('Başla');
+        setBalanceTestState('running');
+        
+        // Ana sayaç başlat
+        let timer = 0;
+        const maxTime = currentTest.testVariant === 'eyes-closed' ? 30 : 60;
+        
+        balanceTimerRef.current = setInterval(() => {
+          timer++;
+          setBalanceTimer(timer);
+          speakNumber(timer);
+          
+          if (timer >= maxTime) {
+            stopBalanceTest(timer);
+          }
+        }, 1000);
+      }
+    }, 1000);
+    
+    balanceTimerRef.current = countdownInterval as unknown as NodeJS.Timeout;
+  };
+
+  const stopBalanceTest = (finalTime?: number) => {
+    if (balanceTimerRef.current) {
+      clearInterval(balanceTimerRef.current);
+      balanceTimerRef.current = null;
+    }
+    window.speechSynthesis.cancel();
+    setBalanceTestState('finished');
+    if (finalTime !== undefined) {
+      setSelectedBalanceTime(finalTime);
+    }
+  };
+
+  const saveBalanceResult = () => {
+    if (selectedBalanceTime === null) return;
+    
+    const criteria = currentTest.evaluationCriteria;
+    const result = evaluateMeasurement(selectedBalanceTime, criteria);
+    
+    setBalanceResults(prev => ({
+      ...prev,
+      [currentTest.id]: { seconds: selectedBalanceTime, result }
+    }));
+    
+    // Sonraki teste geç veya tamamla
+    if (currentTestIndex < filteredTests.length - 1) {
+      setCurrentTestIndex(currentTestIndex + 1);
+      setBalanceTestState('idle');
+      setSelectedBalanceTime(null);
+    } else {
+      goToCompleted();
+    }
+  };
+
+  const resetBalanceTest = () => {
+    if (balanceTimerRef.current) {
+      clearInterval(balanceTimerRef.current);
+      balanceTimerRef.current = null;
+    }
+    window.speechSynthesis.cancel();
+    setBalanceTestState('idle');
+    setBalanceCountdown(5);
+    setBalanceTimer(0);
+    setSelectedBalanceTime(null);
+  };
+
   const submitAll = () => {
     if (completedTestsCount < 1) {
       alert('En az 1 test tamamlamanız gerekiyor. Lütfen bir test yapın.');
@@ -911,8 +1118,19 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
+          {/* Yasal Uyarı Banner'ı */}
+          {currentStep === 'instructions' && currentTestIndex === 0 && (
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
+              <span className="text-amber-500 text-lg flex-shrink-0">ℹ️</span>
+              <p className="text-xs text-amber-800 leading-relaxed">
+                <strong>Bilgilendirme:</strong> Bu testler tıbbi tanı aracı değildir. Sonuçlar yalnızca kişisel farkındalık amaçlıdır. 
+                Kesin değerlendirme için bir sağlık profesyoneline danışmanız önerilir.
+              </p>
+            </div>
+          )}
+          
           {currentStep === 'instructions' && (
-            <div className={`grid gap-6 ${(currentTest as any).testMode === 'measurement' ? 'grid-cols-1' : ((currentTest as any).testMode === 'response' || ['squat', 'calf-raise', 'heel-walk', 'ankle-dorsiflexion-rom', 'ankle-plantarflexion-rom'].includes(currentTest.id) ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1')}`}>
+            <div className={`grid gap-6 ${(currentTest as any).testMode === 'measurement' ? 'grid-cols-1' : ((currentTest as any).testMode === 'response' || (currentTest as any).testMode === 'balance-timer' || ['squat', 'calf-raise', 'heel-walk', 'ankle-dorsiflexion-rom', 'ankle-plantarflexion-rom', 'squat-daily'].includes(currentTest.id) ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1')}`}>
               {/* Sol Sütun - Nörodinamik Testler için (Test Bilgileri + Adım Adım Uygulama) */}
               {(currentTest as any).testMode === 'response' && (
               <div className="space-y-4">
@@ -962,7 +1180,7 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
               )}
 
               {/* Sol Sütun - Test Bilgileri ve Genel Talimatlar (Video testleri için) */}
-              {(currentTest as any).testMode !== 'measurement' && (currentTest as any).testMode !== 'response' && (
+              {(currentTest as any).testMode !== 'measurement' && (currentTest as any).testMode !== 'response' && (currentTest as any).testMode !== 'balance-timer' && (
               <div className="space-y-4">
                 {/* Test Başlığı */}
                 <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-5 border border-purple-200">
@@ -1112,6 +1330,49 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                     <p className="text-xs text-gray-500 text-center mt-3">
                       Video otomatik olarak tekrar eder
                     </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Sağ Sütun - Günlük Çömelme Video (squat-daily testi için) */}
+              {currentTest.id === 'squat-daily' && (
+                <div className="flex flex-col">
+                  <div className="bg-white border-2 border-purple-200 rounded-xl p-4 shadow-lg flex-1 flex flex-col">
+                    <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">
+                      🩺 Günlük Çömelme Nasıl Analiz Edilir?
+                    </h4>
+                    <div className="relative bg-black rounded-lg overflow-hidden aspect-video flex items-center justify-center">
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-contain"
+                        onError={() => {
+                          // Video yüklenemezse placeholder göster
+                        }}
+                      >
+                        <source src="/animations/daily-squat-analysis.mp4" type="video/mp4" />
+                        <source src="/animations/daily-squat-analysis.webm" type="video/webm" />
+                      </video>
+                      {/* Video yoksa placeholder */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-900 to-purple-900 text-white">
+                        <div className="text-center p-6">
+                          <p className="text-4xl mb-3">🏋️‍♂️</p>
+                          <p className="text-sm opacity-90">Günlük Çömelme Analizi</p>
+                          <p className="text-xs opacity-70 mt-2">Video buraya eklenecek</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 bg-purple-50 rounded-lg p-3">
+                      <h5 className="font-semibold text-purple-800 text-sm mb-2">📋 Neye Bakılır?</h5>
+                      <ul className="text-xs text-gray-600 space-y-1">
+                        <li>• Bel aşırı öne eğiliyor mu?</li>
+                        <li>• Dizler içe çöküyor mu?</li>
+                        <li>• Sağ-sol asimetri var mı?</li>
+                        <li>• Topuklar yerden kalkıyor mu?</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1358,6 +1619,271 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                 </div>
               )}
 
+              {/* Denge Testleri için Sol Sütun - Test Bilgileri + Adımlar */}
+              {(currentTest as any).testMode === 'balance-timer' && (
+                <div className="space-y-5">
+                  {/* Test Başlığı */}
+                  <div className={`bg-gradient-to-br ${(currentTest as any).isCritical ? 'from-orange-50 to-red-50 border-orange-200' : 'from-teal-50 to-cyan-50 border-teal-200'} rounded-xl p-6 border`}>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-14 h-14 ${(currentTest as any).isCritical ? 'bg-orange-600' : 'bg-teal-600'} rounded-full flex items-center justify-center text-white font-bold text-2xl`}>
+                        ⚖️
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-900">{currentTest.name}</h3>
+                        <span className={`text-sm font-medium ${(currentTest as any).isCritical ? 'text-orange-600' : 'text-teal-600'}`}>{(currentTest as any).targetArea}</span>
+                      </div>
+                    </div>
+                    {(currentTest as any).isCritical && (
+                      <div className="flex items-center gap-2 bg-orange-100 text-orange-800 p-3 rounded-lg text-sm font-semibold mb-3">
+                        <AlertCircle size={18} />
+                        KRİTİK TEST - Propriosepsiyon değerlendirmesi
+                      </div>
+                    )}
+                    <p className="text-gray-600 text-base leading-relaxed">{currentTest.description}</p>
+                  </div>
+
+                  {/* Adım Adım Uygulama */}
+                  <div className={`${(currentTest as any).isCritical ? 'bg-orange-50 border-orange-600' : 'bg-teal-50 border-teal-600'} border-l-4 p-6 rounded-lg`}>
+                    <h3 className={`font-bold text-lg mb-5 ${(currentTest as any).isCritical ? 'text-orange-800' : 'text-teal-800'}`}>📋 Adım Adım Uygulama</h3>
+                    <div className="space-y-5">
+                      {(currentTest as any).detailedSteps?.map((step: any, index: number) => (
+                        <div key={index} className="flex items-start gap-4">
+                          <span className={`w-8 h-8 ${(currentTest as any).isCritical ? 'bg-orange-600' : 'bg-teal-600'} text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5`}>
+                            {step.step}
+                          </span>
+                          <div className="flex-1">
+                            <p className="font-bold text-gray-800 text-base mb-1">{step.title}</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">{step.instruction}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Denge Testleri için Sağ Sütun - Sesli Sayaç + Sonuç Girişi */}
+              {(currentTest as any).testMode === 'balance-timer' && (
+                <div className="flex flex-col gap-4">
+                  {/* Sayaç Alanı */}
+                  <div className={`bg-gradient-to-br ${(currentTest as any).isCritical ? 'from-orange-900 to-red-900' : 'from-teal-900 to-cyan-900'} rounded-xl p-5 shadow-lg text-white`}>
+                    <h4 className="text-base font-bold mb-3 text-center flex items-center justify-center gap-2">
+                      🔊 Sesli Sayaç
+                    </h4>
+                    
+                    {/* Sayaç Durumuna Göre Görünüm */}
+                    <div className="text-center">
+                      {balanceTestState === 'idle' && (
+                        <div className="space-y-3">
+                          <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                            <span className="text-4xl">⏱️</span>
+                          </div>
+                          <p className="text-white/80 text-xs">
+                            {(currentTest as any).testVariant === 'eyes-closed' 
+                              ? '5 saniye geri sayım sonrası GÖZLERİNİZİ KAPATIN.'
+                              : '5 saniye geri sayım sonrası sayaç sesli saymaya başlar.'}
+                          </p>
+                          <button
+                            onClick={startBalanceTest}
+                            className={`w-full py-3 ${(currentTest as any).isCritical ? 'bg-orange-500 hover:bg-orange-400' : 'bg-teal-500 hover:bg-teal-400'} text-white text-lg font-bold rounded-xl transition shadow-lg flex items-center justify-center gap-2`}
+                          >
+                            <Play size={22} fill="white" />
+                            Başlat
+                          </button>
+                        </div>
+                      )}
+                      
+                      {balanceTestState === 'countdown' && (
+                        <div className="space-y-4">
+                          <div className={`w-40 h-40 mx-auto ${(currentTest as any).isCritical ? 'bg-orange-500' : 'bg-teal-500'} rounded-full flex items-center justify-center animate-pulse`}>
+                            <span className="text-7xl font-bold">{balanceCountdown}</span>
+                          </div>
+                          <p className="text-2xl font-bold animate-pulse">Hazırlanın!</p>
+                          {(currentTest as any).testVariant === 'eyes-closed' && balanceCountdown <= 2 && (
+                            <p className="text-xl text-yellow-300 font-bold">👀 GÖZLERİNİZİ KAPATIN!</p>
+                          )}
+                        </div>
+                      )}
+                      
+                      {balanceTestState === 'running' && (
+                        <div className="space-y-4">
+                          <div className={`w-44 h-44 mx-auto ${(currentTest as any).isCritical ? 'bg-gradient-to-br from-orange-400 to-red-500' : 'bg-gradient-to-br from-teal-400 to-cyan-500'} rounded-full flex items-center justify-center shadow-2xl`}>
+                            <span className="text-8xl font-bold">{balanceTimer}</span>
+                          </div>
+                          <p className="text-xl">saniye</p>
+                          {(currentTest as any).testVariant === 'eyes-closed' && (
+                            <p className="text-yellow-300 font-medium">👀 Gözleriniz kapalı olmalı!</p>
+                          )}
+                          <button
+                            onClick={() => stopBalanceTest(balanceTimer)}
+                            className="w-full py-4 bg-red-500 hover:bg-red-400 text-white text-xl font-bold rounded-xl transition shadow-lg flex items-center justify-center gap-3"
+                          >
+                            <Pause size={28} />
+                            Düştüm / Durdur
+                          </button>
+                        </div>
+                      )}
+                      
+                      {balanceTestState === 'finished' && (
+                        <div className="space-y-4">
+                          <div className="w-32 h-32 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                            <span className="text-5xl">✅</span>
+                          </div>
+                          <p className="text-lg">Test tamamlandı!</p>
+                          <button
+                            onClick={resetBalanceTest}
+                            className="flex items-center justify-center gap-2 mx-auto text-white/80 hover:text-white transition"
+                          >
+                            <RotateCcw size={18} />
+                            Tekrar Dene
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Değerlendirme Kriterleri - Sayacın Altında */}
+                  {balanceTestState !== 'finished' && (currentTest as any).evaluationCriteria && (
+                    <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                      <h4 className="font-semibold text-gray-700 mb-2 text-sm flex items-center gap-2">
+                        📐 Değerlendirme
+                      </h4>
+                      <div className="grid grid-cols-3 gap-2 text-xs">
+                        <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
+                          <span className="text-lg">{(currentTest as any).evaluationCriteria.good.icon}</span>
+                          <span className="font-bold text-green-700">{(currentTest as any).evaluationCriteria.good.min}+s</span>
+                          <span className="text-green-600 text-center">{(currentTest as any).evaluationCriteria.good.label}</span>
+                        </div>
+                        <div className="flex flex-col items-center p-2 bg-yellow-50 rounded-lg">
+                          <span className="text-lg">{(currentTest as any).evaluationCriteria.moderate.icon}</span>
+                          <span className="font-bold text-yellow-700">{(currentTest as any).evaluationCriteria.moderate.min}-{(currentTest as any).evaluationCriteria.moderate.max}s</span>
+                          <span className="text-yellow-600 text-center">{(currentTest as any).evaluationCriteria.moderate.label}</span>
+                        </div>
+                        <div className="flex flex-col items-center p-2 bg-red-50 rounded-lg">
+                          <span className="text-lg">{(currentTest as any).evaluationCriteria.poor.icon}</span>
+                          <span className="font-bold text-red-700">&lt;{(currentTest as any).evaluationCriteria.poor.max + 1}s</span>
+                          <span className="text-red-600 text-center">{(currentTest as any).evaluationCriteria.poor.label}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Sonuç Girişi */}
+                  {balanceTestState === 'finished' && (
+                    <div className={`bg-gradient-to-br ${(currentTest as any).isCritical ? 'from-orange-50 to-red-50 border-orange-200' : 'from-teal-50 to-cyan-50 border-teal-200'} border-2 rounded-xl p-4`}>
+                      <h4 className={`font-bold ${(currentTest as any).isCritical ? 'text-orange-700' : 'text-teal-700'} mb-3 text-center text-sm`}>
+                        ⏱️ Kaç saniye dengede kaldınız?
+                      </h4>
+                      
+                      {/* Hızlı Seçenekler */}
+                      <div className="grid grid-cols-6 gap-1.5 mb-3">
+                        {[5, 10, 15, 20, 25, 30].map(sec => (
+                          <button
+                            key={sec}
+                            onClick={() => setSelectedBalanceTime(sec)}
+                            className={`py-2 rounded-lg font-bold text-sm transition ${
+                              selectedBalanceTime === sec 
+                                ? ((currentTest as any).isCritical ? 'bg-orange-600 text-white' : 'bg-teal-600 text-white')
+                                : 'bg-white border border-gray-200 hover:border-gray-300 text-gray-700'
+                            }`}
+                          >
+                            {sec}
+                          </button>
+                        ))}
+                      </div>
+                      
+                      {/* Manuel Giriş */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-gray-500 text-sm">veya:</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max={((currentTest as any).testVariant === 'eyes-closed' ? 30 : 60)}
+                          value={selectedBalanceTime || ''}
+                          onChange={(e) => setSelectedBalanceTime(parseInt(e.target.value) || null)}
+                          placeholder="Saniye"
+                          className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-center font-bold focus:outline-none focus:border-teal-500"
+                        />
+                        <span className="text-gray-500 text-sm">sn</span>
+                      </div>
+                      
+                      {/* Sonuç Gösterimi */}
+                      {selectedBalanceTime !== null && (currentTest as any).evaluationCriteria && (
+                        <div className={`p-3 rounded-lg mb-3 ${
+                          selectedBalanceTime >= (currentTest as any).evaluationCriteria.good.min
+                            ? 'bg-green-100 border-l-4 border-green-500'
+                            : selectedBalanceTime >= (currentTest as any).evaluationCriteria.moderate.min
+                            ? 'bg-yellow-100 border-l-4 border-yellow-500'
+                            : 'bg-red-100 border-l-4 border-red-500'
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">
+                              {selectedBalanceTime >= (currentTest as any).evaluationCriteria.good.min
+                                ? (currentTest as any).evaluationCriteria.good.icon
+                                : selectedBalanceTime >= (currentTest as any).evaluationCriteria.moderate.min
+                                ? (currentTest as any).evaluationCriteria.moderate.icon
+                                : (currentTest as any).evaluationCriteria.poor.icon}
+                            </span>
+                            <div>
+                              <span className={`font-bold text-sm ${
+                                selectedBalanceTime >= (currentTest as any).evaluationCriteria.good.min
+                                  ? 'text-green-700'
+                                  : selectedBalanceTime >= (currentTest as any).evaluationCriteria.moderate.min
+                                  ? 'text-yellow-700'
+                                  : 'text-red-700'
+                              }`}>
+                                {selectedBalanceTime >= (currentTest as any).evaluationCriteria.good.min
+                                  ? (currentTest as any).evaluationCriteria.good.label
+                                  : selectedBalanceTime >= (currentTest as any).evaluationCriteria.moderate.min
+                                  ? (currentTest as any).evaluationCriteria.moderate.label
+                                  : (currentTest as any).evaluationCriteria.poor.label}
+                              </span>
+                              <p className="text-xs text-gray-600">
+                                {selectedBalanceTime >= (currentTest as any).evaluationCriteria.good.min
+                                  ? (currentTest as any).evaluationCriteria.good.description
+                                  : selectedBalanceTime >= (currentTest as any).evaluationCriteria.moderate.min
+                                  ? (currentTest as any).evaluationCriteria.moderate.description
+                                  : (currentTest as any).evaluationCriteria.poor.description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Butonlar */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={saveBalanceResult}
+                          disabled={selectedBalanceTime === null}
+                          className={`flex-1 ${(currentTest as any).isCritical ? 'bg-gradient-to-r from-orange-600 to-red-600' : 'bg-gradient-to-r from-teal-600 to-cyan-600'} text-white py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5`}
+                        >
+                          <CheckCircle2 size={16} />
+                          {currentTestIndex < filteredTests.length - 1 ? 'Kaydet' : 'Tamamla'}
+                        </button>
+                        <button
+                          onClick={skipTest}
+                          className="px-4 bg-white border border-gray-200 text-gray-600 py-2.5 rounded-xl font-medium text-sm hover:bg-gray-50 transition"
+                        >
+                          Atla
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Test henüz bitmemişken göster */}
+                  {balanceTestState !== 'finished' && (
+                    <div className="text-center mt-2">
+                      <button
+                        onClick={skipTest}
+                        className="text-gray-400 hover:text-gray-600 text-xs"
+                      >
+                        Bu testi atla →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Ölçüm bazlı testler için özel UI */}
               {(currentTest as any).testMode === 'measurement' ? (
                 <div className="lg:col-span-2">
@@ -1557,7 +2083,7 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
                     </div>
                   </div>
                 </div>
-              ) : (currentTest as any).testMode !== 'response' ? (
+              ) : (currentTest as any).testMode !== 'response' && (currentTest as any).testMode !== 'balance-timer' ? (
                 /* Video bazlı testler için normal butonlar */
                 <div className="flex flex-col gap-3">
                   <div className="flex gap-3">

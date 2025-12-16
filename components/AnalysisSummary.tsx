@@ -28,7 +28,7 @@ const packages: PackageItem[] = [
     features: [
       'Detaylı anamnez değerlendirmesi',
       'Fizyoterapist tarafından vaka analizi',
-      '4-6 haftalık kişiye özel egzersiz reçetesi',
+      '4-6 haftalık kişiye özel egzersiz programı',
       'Egzersiz videoları ve açıklamaları',
     ],
     gradient: 'from-white to-slate-50',
@@ -72,7 +72,7 @@ const lockedTests = [
   { icon: '🛡️', title: 'Detaylı Kas Kuvvet Analizi', subtitle: 'Manuel kas testi simülasyonu', desc: 'Hangi kaslarınız uykuda, hangileri aşırı çalışıyor? (Gluteal amnezi, core stabilizasyonu vb.)' },
   { icon: '📏', title: 'Kas Kısalık ve Esneklik Testleri', subtitle: 'Ağrısının sebebi kas kısalığı mı?', desc: 'Hamstring, pektoral, iliopsoas, piriformis gerginlik testleri.' },
   { icon: '📐', title: 'Eklem Hareket Açıklığı', subtitle: 'Gonyometrik analiz', desc: 'Eklemler tam açıyla hareket ediyor mu, kısıtlılık derecesi nedir?' },
-  { icon: '🧠', title: 'Nörodinamik Testler', subtitle: 'Sinir germe testleri', desc: 'Ağrı kas kaynaklı mı yoksa sinir sıkışması mı (Fıtık/Siyatik)?' },
+  { icon: '🧠', title: 'Sinir Hassasiyeti Kontrolü', subtitle: 'Sinir germe testleri', desc: 'Kas ve sinir hassasiyetini ayırt etmenize yardımcı olur.' },
   { icon: '⚖️', title: 'Fonksiyonel Denge ve Propriosepsiyon', subtitle: 'Vücudun uzaydaki konum algısı ve denge stratejisi', desc: 'Vücudun uzaydaki konum algısı ve denge stratejisi.' },
   { icon: '🩺', title: 'Hareket Kalitesi Analizi', subtitle: 'Çömelme, eğilme ve uzanma sırasında omurga biyomekaniği kontrolü', desc: 'Çömelme, eğilme ve uzanma sırasında omurga biyomekaniği kontrolü.' },
 ];
@@ -150,7 +150,7 @@ const AnalysisSummary: React.FC<AnalysisSummaryProps> = ({ open, onClose, onAddT
                 <div className="cta-card">
                   <span className="cta-badge">🎯 SON ADIM</span>
                   <p className="cta-text">
-                    Fizyoterapistinizin egzersiz reçetenizi hazırlayabilmesi için <strong>size uygun paketi seçin</strong>
+                    Fizyoterapistinizin egzersiz programınızı hazırlayabilmesi için <strong>size uygun paketi seçin</strong>
                   </p>
             </div>
 
@@ -227,8 +227,8 @@ const AnalysisSummary: React.FC<AnalysisSummaryProps> = ({ open, onClose, onAddT
                 {/* Right Side: Clinical Tests */}
                 <div className="tests-column">
                   <div className="tests-header">
-                    <h2 className="column-title">🔒 Paket Sonrası Klinik Testler</h2>
-                    <p className="column-subtitle">Bu testler olmadan reçete yazmayız; paket alımından sonra uygulayacağız.</p>
+                    <h2 className="column-title">🔒 Paket Sonrası Öz-Değerlendirme Testleri</h2>
+                    <p className="column-subtitle">Bu testler olmadan program oluşturmayız; paket alımından sonra uygulayacağız.</p>
                   </div>
                   
                   <div className="tests-list-vertical">
@@ -251,7 +251,7 @@ const AnalysisSummary: React.FC<AnalysisSummaryProps> = ({ open, onClose, onAddT
                     <span className="info-icon">💡</span>
               <div>
                 <strong>Neden bu testler?</strong>
-                      <p>Egzersiz bir ilaçtır; rastgele verilemez. Bu testlerle nokta atışı tedavi protokolü oluşturuyoruz.</p>
+                      <p>Egzersiz güçlü bir araçtır; rastgele uygulanamaz. Bu testlerle size özel egzersiz programı oluşturuyoruz.</p>
                     </div>
                   </div>
                 </div>

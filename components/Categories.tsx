@@ -70,7 +70,7 @@ const Categories: React.FC<CategoriesProps> = ({ onSelectPackage }) => {
             Hizmet Paketleri
           </h2>
           <p className="mt-3 text-base md:text-lg text-slate-600">
-            Bilimsel egzersiz reçetenizi alın, iyileşme sürecinizi profesyonel kontrolde yönetin.
+            Bilimsel egzersiz programınızı alın, sürecinizi profesyonel kontrolde yönetin.
           </p>
         </div>
 
@@ -147,7 +147,7 @@ const Categories: React.FC<CategoriesProps> = ({ onSelectPackage }) => {
               <div>
                 <h5 className="text-lg font-bold text-slate-900 mb-1">Bilimsel Not</h5>
                 <p className="text-slate-700 leading-relaxed">
-                  Egzersiz tedavisi ilaç gibidir; adaptasyon için zamana ihtiyaç vardır. Literatür,
+                  Egzersiz programları sabır gerektirir; adaptasyon için zamana ihtiyaç vardır. Literatür,
                   anlamlı iyileşme için en az 4-6 hafta düzenli uygulama önerir.
                 </p>
               </div>

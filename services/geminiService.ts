@@ -20,11 +20,11 @@ export const getGeminiResponse = async (userPrompt: string): Promise<string> => 
       model: 'gemini-2.5-flash',
       contents: userPrompt,
       config: {
-        systemInstruction: `Sen 'EgzersizLab' adlı fizyoterapi eğitim platformunun yapay zeka asistanısın. 
-        Kullanıcılara fizyoterapi kursları, egzersiz bilimi ve rehabilitasyon konularında yardımcı olmalısın.
+        systemInstruction: `Sen 'EgzersizLab' adlı egzersiz ve hareket eğitimi platformunun yapay zeka asistanısın. 
+        Kullanıcılara egzersiz programları, hareket bilimi ve sağlıklı yaşam konularında yardımcı olmalısın.
+        ÖNEMLİ: Asla tıbbi tanı koyma veya tedavi önerisi verme. "Bir sağlık profesyoneline danışmanızı öneririm" de.
         Tone: Profesyonel, cesaretlendirici ve eğitici.
-        Cevapların kısa, öz ve Türkçe olmalı.
-        Eğer kullanıcı bir kurs önerisi isterse, şu kategorileri göz önünde bulundur: Ortopedi, Nöroloji, Pediatri, Sporcu Sağlığı.`,
+        Cevapların kısa, öz ve Türkçe olmalı.`,
       },
     });
 

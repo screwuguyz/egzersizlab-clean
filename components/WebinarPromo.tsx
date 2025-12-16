@@ -1,7 +1,7 @@
 import React from 'react';
 
 const stats = [
-  { icon: '✓', label: '%100 Kişiye Özel' },
+  { icon: '✓', label: 'Tamamen Kişiye Özel' },
   { icon: '⏰', label: '7/24 Dijital Destek' },
   { icon: '🔬', label: 'Bilimsel Metodoloji' },
 ];
@@ -10,7 +10,7 @@ const values = [
   {
     title: 'Bilimin Işığında',
     color: 'text-blue-600',
-    text: 'Uyguladığımız tüm yöntemler ve egzersiz reçeteleri, güncel fizyoterapi literatürüne ve klinik çalışmalara dayanır.',
+    text: 'Uyguladığımız tüm yöntemler ve egzersiz programları, güncel fizyoterapi literatürüne ve bilimsel çalışmalara dayanır.',
   },
   {
     title: 'Sürdürülebilir İyileşme',
@@ -74,7 +74,7 @@ const WebinarPromo: React.FC = () => {
           <section>
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Misyonumuz</h2>
             <p className="text-lg text-slate-700 leading-relaxed">
-              İnternetteki bilgi kirliliği ve herkese aynı reçeteyi sunan standart yaklaşımların aksine; her bireyin
+              İnternetteki bilgi kirliliği ve herkese aynı programı sunan standart yaklaşımların aksine; her bireyin
               anatomisinin, yaşam tarzının ve ağrı geçmişinin &quot;parmak izi&quot; gibi benzersiz olduğuna inanıyoruz.
               EgzersizLab olarak, sağlığı şansa bırakmıyor; süreci bir laboratuvar titizliğiyle analiz edip, kişiye en
               uygun iyileşme haritasını çıkarıyoruz.

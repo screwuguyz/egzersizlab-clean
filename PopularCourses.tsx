@@ -10,7 +10,7 @@ const categories = [
   {
     tag: 'Ortopedi',
     title: 'Bel, Boyun ve Eklem Ağrıları',
-    desc: 'Kas-iskelet sistemi sorunları ve tedavi yöntemleri hakkında bilgiler',
+    desc: 'Kas-iskelet sistemi ve egzersiz yöntemleri hakkında bilgiler',
     gradient: 'from-blue-100 to-blue-200',
     pill: 'bg-blue-100 text-blue-700',
     iconColor: 'text-blue-600',
@@ -25,7 +25,7 @@ const categories = [
   {
     tag: 'Nöroloji',
     title: 'İnme, Sinir Sıkışması ve Rehabilitasyon',
-    desc: 'Sinir sistemi hastalıkları ve iyileşme süreçleri',
+    desc: 'Sinir sistemi ve hareket kontrolü hakkında bilgiler',
     gradient: 'from-purple-100 to-purple-200',
     pill: 'bg-purple-100 text-purple-700',
     iconColor: 'text-purple-600',

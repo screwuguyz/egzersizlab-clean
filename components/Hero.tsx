@@ -4,21 +4,21 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const exerciseCards = new URL('../exercise-cards.jpg.png', import.meta.url).href;
 
 const sliderItems = [
-  `Hastanelerde adeta bir broşür gibi dağıtılan bu standart egzersiz reçeteleri, hastayı gerçekten tedavi etmek için mi, yoksa "bir şeyler önermiş olmak" için mi veriliyor?
+  `Standart egzersiz listeleri herkese aynı şekilde dağıtılıyor. Peki bu yaklaşım sizin özel ihtiyaçlarınızı karşılıyor mu?
 
-Aynı kâğıdın, 20 yaşındaki bir sporcunun ön çapraz bağ sakatlığına da, 70 yaşındaki bir teyzenin ileri derece kireçlenmesine de (osteoartrit) şifa olması beklenebilir mi?
+Genç bir sporcunun ihtiyaçları ile yaşlı birinin ihtiyaçları aynı olabilir mi?
 
 Elinize tutuşturulan o kâğıt, sizin ağrı eşiğinizi, kas dengesizliğinizi veya hareket kısıtlılığınızı "okuyabiliyor" mu?`,
-  `Anatomimiz parmak izimiz kadar benzersizken, tedavimiz nasıl bir fotokopi makinesinden çıkabilir?
+  `Anatomimiz parmak izimiz kadar benzersizken, egzersiz programımız nasıl bir fotokopi makinesinden çıkabilir?
 
-Herkesin kemik yapısı, eklem açısı, geçmişteki yaralanmaları ve yaşam tarzı birbirinden tamamen farklıyken; hepsini aynı hareketlerle iyileştirmeye çalışmak, farklı kilitleri aynı anahtarla açmaya çalışmak değil midir?
+Herkesin kemik yapısı, eklem açısı, geçmişteki yaralanmaları ve yaşam tarzı birbirinden tamamen farklıyken; hepsini aynı hareketlerle desteklemeye çalışmak, farklı kilitleri aynı anahtarla açmaya çalışmak değil midir?
 
-Bir başkasına iyi gelen "bacak kaldırma" hareketi, sizin özel durumunuzda dizinize daha fazla yük bindirip sorunu büyütüyorsa, o kâğıdın sorumluluğunu kim alacak?`,
-  `Gerçek fizik tedavi; kâğıttan hareket bakmak değil, size özel dikilmiş bir elbise gibi tasarlanan, süreç içinde değiştirilen dinamik bir programdır.
+Bir başkasına iyi gelen hareket, sizin özel durumunuzda farklı sonuçlar verebilir.`,
+  `Doğru egzersiz programı; standart bir liste değil, size özel tasarlanan ve süreç içinde güncellenen dinamik bir plandır.
 
-Egzersiz ilaçtır; dozajı, sıklığı ve türü kişiye göre ayarlanmadığında zehire dönüşebilir.
+Egzersiz güçlü bir araçtır; dozajı, sıklığı ve türü kişiye göre ayarlanmalıdır.
 
-Planınız, semptomlarınıza ve anatomik ihtiyacınıza göre yaşayan bir reçete olmalı.`
+Programınız, ihtiyaçlarınıza ve hedeflerinize göre şekillenen kişisel bir yol haritası olmalı.`
 ];
 
 const microFacts = [
