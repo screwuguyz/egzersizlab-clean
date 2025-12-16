@@ -93,6 +93,22 @@ const Dashboard: React.FC = () => {
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [activeProgram, setActiveProgram] = useState<any>(null);
   
+  // Tamamlanan test kategorileri
+  const [completedTestCategories, setCompletedTestCategories] = useState<string[]>([]);
+  
+  // Tüm test kategorileri
+  const allTestCategories = [
+    { id: 'muscle-strength', name: 'Kas Kuvveti', icon: '💪' },
+    { id: 'flexibility', name: 'Esneklik', icon: '🧘' },
+    { id: 'rom', name: 'EHA', icon: '📐' },
+    { id: 'neurodynamic', name: 'Nörodinamik', icon: '🧠' },
+    { id: 'balance', name: 'Denge', icon: '⚖️' },
+    { id: 'movement-analysis', name: 'Hareket Analizi', icon: '🏃' }
+  ];
+  
+  // Tüm kategoriler tamamlandı mı?
+  const allCategoriesCompleted = allTestCategories.every(cat => completedTestCategories.includes(cat.id));
+  
   // Kullanıcının ağrılı bölgelerini localStorage'dan oku
   const [userPainAreas, setUserPainAreas] = useState<string[]>(() => {
     try {
@@ -436,6 +452,34 @@ const Dashboard: React.FC = () => {
           setActiveProgram(program || null);
         } else {
           setActiveProgram(null);
+        }
+        
+        // Tamamlanan test kategorilerini kontrol et
+        if (dashboardData.clinicalAssessments) {
+          const completed: string[] = [];
+          const assessments = dashboardData.clinicalAssessments;
+          
+          // Her kategori için en az 1 tamamlanmış test var mı kontrol et
+          if (assessments['muscle-strength']?.some((t: any) => t.status === 'completed')) {
+            completed.push('muscle-strength');
+          }
+          if (assessments['flexibility']?.some((t: any) => t.status === 'completed')) {
+            completed.push('flexibility');
+          }
+          if (assessments['rom']?.some((t: any) => t.status === 'completed')) {
+            completed.push('rom');
+          }
+          if (assessments['neurodynamic']?.some((t: any) => t.status === 'completed')) {
+            completed.push('neurodynamic');
+          }
+          if (assessments['balance']?.some((t: any) => t.status === 'completed')) {
+            completed.push('balance');
+          }
+          if (assessments['movement-analysis']?.some((t: any) => t.status === 'completed')) {
+            completed.push('movement-analysis');
+          }
+          
+          setCompletedTestCategories(completed);
         }
       }
     } catch (error) {
@@ -1674,42 +1718,138 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Program atanmadan önce hazırlanıyor mesajı */}
+              {/* Program atanmadan önce - test durumu göster */}
               {packageType !== 'none' && !activeProgram && (
                 <div style={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: allCategoriesCompleted 
+                    ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' 
+                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   borderRadius: '20px',
                   padding: '40px',
-                  textAlign: 'center',
                   color: 'white',
                   marginBottom: '24px',
-                  boxShadow: '0 10px 40px rgba(102, 126, 234, 0.3)'
+                  boxShadow: allCategoriesCompleted 
+                    ? '0 10px 40px rgba(16, 185, 129, 0.3)'
+                    : '0 10px 40px rgba(102, 126, 234, 0.3)'
                 }}>
-                  <div style={{ fontSize: '64px', marginBottom: '20px' }}>⏳</div>
-                  <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '12px' }}>
-                    Egzersiz Programınız Hazırlanıyor
-                  </h2>
-                  <p style={{ fontSize: '16px', opacity: 0.9, marginBottom: '8px' }}>
-                    Uzman ekibimiz sizin için kişiselleştirilmiş bir program oluşturuyor.
-                  </p>
-                  <p style={{ fontSize: '14px', opacity: 0.8 }}>
-                    Maksimum <strong>1 iş günü</strong> içinde programınız hazır olacak!
-                  </p>
-                  <div style={{
-                    marginTop: '24px',
-                    padding: '16px',
-                    background: 'rgba(255,255,255,0.15)',
-                    borderRadius: '12px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '12px'
-                  }}>
-                    <span style={{ fontSize: '24px' }}>💡</span>
-                    <span style={{ fontSize: '13px', textAlign: 'left' }}>
-                      Bu süreçte öz-değerlendirme testlerini tamamlayarak<br/>
-                      programınızın daha etkili olmasına katkı sağlayabilirsiniz.
-                    </span>
-                  </div>
+                  {allCategoriesCompleted ? (
+                    // Tüm testler tamamlandı - Program hazırlanıyor
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '64px', marginBottom: '20px' }}>✅</div>
+                      <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '12px' }}>
+                        Tebrikler! Tüm Testler Tamamlandı
+                      </h2>
+                      <p style={{ fontSize: '16px', opacity: 0.9, marginBottom: '8px' }}>
+                        Egzersiz programınız hazırlanıyor...
+                      </p>
+                      <p style={{ fontSize: '14px', opacity: 0.8 }}>
+                        Maksimum <strong>1 iş günü</strong> içinde programınız hazır olacak!
+                      </p>
+                      <div style={{
+                        marginTop: '24px',
+                        padding: '16px',
+                        background: 'rgba(255,255,255,0.15)',
+                        borderRadius: '12px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '12px'
+                      }}>
+                        <span style={{ fontSize: '24px' }}>🎉</span>
+                        <span style={{ fontSize: '13px' }}>
+                          Uzman ekibimiz test sonuçlarınıza göre kişiselleştirilmiş programınızı hazırlıyor.
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    // Testler tamamlanmadı - İlerleme göster
+                    <>
+                      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>📋</div>
+                        <h2 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '8px' }}>
+                          Öz-Değerlendirme Testlerini Tamamlayın
+                        </h2>
+                        <p style={{ fontSize: '14px', opacity: 0.9 }}>
+                          Egzersiz programınızın hazırlanabilmesi için her kategoriden en az 1 test tamamlamalısınız.
+                        </p>
+                      </div>
+                      
+                      {/* İlerleme çubuğu */}
+                      <div style={{ marginBottom: '24px' }}>
+                        <div style={{ 
+                          display: 'flex', 
+                          justifyContent: 'space-between', 
+                          marginBottom: '8px',
+                          fontSize: '13px',
+                          opacity: 0.9
+                        }}>
+                          <span>İlerleme</span>
+                          <span>{completedTestCategories.length} / {allTestCategories.length} kategori</span>
+                        </div>
+                        <div style={{
+                          background: 'rgba(255,255,255,0.2)',
+                          borderRadius: '10px',
+                          height: '12px',
+                          overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            background: 'white',
+                            height: '100%',
+                            width: `${(completedTestCategories.length / allTestCategories.length) * 100}%`,
+                            borderRadius: '10px',
+                            transition: 'width 0.5s ease'
+                          }} />
+                        </div>
+                      </div>
+                      
+                      {/* Kategori durumları */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: '12px'
+                      }}>
+                        {allTestCategories.map(cat => {
+                          const isCompleted = completedTestCategories.includes(cat.id);
+                          return (
+                            <div
+                              key={cat.id}
+                              style={{
+                                background: isCompleted ? 'rgba(16, 185, 129, 0.3)' : 'rgba(255,255,255,0.1)',
+                                borderRadius: '12px',
+                                padding: '12px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                border: isCompleted ? '2px solid rgba(16, 185, 129, 0.5)' : '2px solid transparent'
+                              }}
+                            >
+                              <span style={{ fontSize: '20px' }}>
+                                {isCompleted ? '✅' : cat.icon}
+                              </span>
+                              <span style={{ 
+                                fontSize: '13px', 
+                                fontWeight: 500,
+                                opacity: isCompleted ? 1 : 0.8
+                              }}>
+                                {cat.name}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      <div style={{
+                        marginTop: '24px',
+                        padding: '12px 16px',
+                        background: 'rgba(255,255,255,0.1)',
+                        borderRadius: '10px',
+                        fontSize: '13px',
+                        textAlign: 'center',
+                        opacity: 0.9
+                      }}>
+                        💡 Yukarıdaki test butonlarından eksik kategorileri tamamlayın
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 

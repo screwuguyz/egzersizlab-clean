@@ -1106,26 +1106,43 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
         const testInfo = config.tests.find(t => t.id === testId);
         if (testInfo) {
           // Video URL'ini base64'e çevir (blob URL ise)
-          let videoData = videoUrl as string;
+          let videoData: string | null = null;
+          
           if ((videoUrl as string).startsWith('blob:')) {
             try {
               const response = await fetch(videoUrl as string);
+              if (!response.ok) {
+                throw new Error('Fetch failed: ' + response.status);
+              }
               const blob = await response.blob();
-              videoData = await new Promise<string>((resolve) => {
+              videoData = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result as string);
+                reader.onloadend = () => {
+                  if (reader.result && typeof reader.result === 'string' && reader.result.startsWith('data:')) {
+                    resolve(reader.result);
+                  } else {
+                    reject(new Error('Invalid base64 result'));
+                  }
+                };
+                reader.onerror = () => reject(reader.error);
                 reader.readAsDataURL(blob);
               });
             } catch (e) {
               console.error('Video dönüştürme hatası:', e);
+              // Blob URL geçersiz - videoyu null olarak kaydet
+              videoData = null;
             }
+          } else if ((videoUrl as string).startsWith('data:')) {
+            // Zaten base64 formatında
+            videoData = videoUrl as string;
           }
           
           testResults.push({
             testId,
             testName: testInfo.name,
             testType: testType,
-            video: videoData,
+            video: videoData, // null olabilir - geçersiz blob URL kaydedilmez
+            videoError: videoData === null ? 'Video dönüştürülemedi' : undefined,
             date: new Date().toISOString(),
             status: 'completed'
           });
