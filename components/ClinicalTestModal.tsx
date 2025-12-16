@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { X, Upload, Video, Play, Pause, RotateCcw, CheckCircle2, AlertCircle, ArrowLeft, Trash2 } from 'lucide-react';
+import { apiService } from '../services/apiService';
 
 interface ClinicalTestModalProps {
   isOpen: boolean;
@@ -578,11 +579,17 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
   }
 
   const currentTest = config.tests[currentTestIndex];
-  // Ölçüm testleri + video testleri toplam tamamlanan sayısı
+  // Tüm test tiplerini say: video + ölçüm + nörodinamik + denge
   const completedMeasurementTests = Object.keys(measurementResults).filter(id => 
     measurementResults[id]?.left || measurementResults[id]?.right
   ).length;
-  const completedTestsCount = Object.keys(recordedVideos).length + completedMeasurementTests;
+  const completedNeurodynamicTests = Object.keys(neurodynamicResponses).filter(id => 
+    neurodynamicResponses[id]?.responseId
+  ).length;
+  const completedBalanceTests = Object.keys(balanceResults).filter(id => 
+    balanceResults[id] !== undefined && balanceResults[id] !== null
+  ).length;
+  const completedTestsCount = Object.keys(recordedVideos).length + completedMeasurementTests + completedNeurodynamicTests + completedBalanceTests;
   const allTestsCompleted = currentTestIndex >= config.tests.length - 1;
   const canSubmit = completedTestsCount >= 1; // En az 1 test yeterli
   const showAnimation = testType === 'muscle-strength' && currentStep === 'recording';
@@ -1082,19 +1089,120 @@ const ClinicalTestModal: React.FC<ClinicalTestModalProps> = ({ isOpen, onClose, 
     setSelectedBalanceTime(null);
   };
 
-  const submitAll = () => {
+  const submitAll = async () => {
     if (completedTestsCount < 1) {
       alert('En az 1 test tamamlamanız gerekiyor. Lütfen bir test yapın.');
       setCurrentTestIndex(0);
       setCurrentStep('instructions');
       return;
     }
-    // Tüm videoları backend'e gönder
-    console.log('Videolar gönderiliyor:', uploadedVideos);
-    console.log('Tamamlanan testler:', completedTestsCount);
-    console.log('Atlanan testler:', skippedTests.size);
-    // TODO: API call to upload videos
-    onClose();
+
+    try {
+      // Tüm test sonuçlarını topla
+      const testResults: any[] = [];
+      
+      // Video tabanlı testler
+      for (const [testId, videoUrl] of Object.entries(recordedVideos)) {
+        const testInfo = config.tests.find(t => t.id === testId);
+        if (testInfo) {
+          // Video URL'ini base64'e çevir (blob URL ise)
+          let videoData = videoUrl as string;
+          if ((videoUrl as string).startsWith('blob:')) {
+            try {
+              const response = await fetch(videoUrl as string);
+              const blob = await response.blob();
+              videoData = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.readAsDataURL(blob);
+              });
+            } catch (e) {
+              console.error('Video dönüştürme hatası:', e);
+            }
+          }
+          
+          testResults.push({
+            testId,
+            testName: testInfo.name,
+            testType: testType,
+            video: videoData,
+            date: new Date().toISOString(),
+            status: 'completed'
+          });
+        }
+      }
+
+      // Ölçüm tabanlı testler (esneklik, ROM vb.)
+      for (const [testId, result] of Object.entries(measurementResults)) {
+        if (result) {
+          const testInfo = config.tests.find(t => t.id === testId);
+          const r = result as any;
+          testResults.push({
+            testId,
+            testName: testInfo?.name || testId,
+            testType: testType,
+            leftValue: r.left,
+            rightValue: r.right,
+            leftResult: r.leftResult,
+            rightResult: r.rightResult,
+            unit: 'cm',
+            date: new Date().toISOString(),
+            status: 'completed'
+          });
+        }
+      }
+
+      // Nörodinamik test yanıtları
+      for (const [testId, resp] of Object.entries(neurodynamicResponses)) {
+        const response = resp as { responseId: string; result: string; description: string; color: string };
+        if (response && response.responseId) {
+          const testInfo = config.tests.find(t => t.id === testId);
+          testResults.push({
+            testId,
+            testName: testInfo?.name || testId,
+            testType: testType,
+            response: response.description, // Kullanıcının seçtiği yanıtın açıklaması
+            result: response.result, // 'normal', 'positive', 'referred' gibi
+            date: new Date().toISOString(),
+            status: 'completed'
+          });
+        }
+      }
+
+      // Denge testi sonuçları
+      for (const [testId, result] of Object.entries(balanceResults)) {
+        if (result) {
+          const testInfo = config.tests.find(t => t.id === testId);
+          const r = result as any;
+          testResults.push({
+            testId,
+            testName: testInfo?.name || testId,
+            testType: testType,
+            time: r.time,
+            result: r.result,
+            date: new Date().toISOString(),
+            status: 'completed'
+          });
+        }
+      }
+
+      // Dashboard'a kaydet
+      const existingData: any = await apiService.getDashboardData();
+      const currentClinicalAssessments = existingData?.data?.clinicalAssessments || {};
+      
+      // Mevcut test tipine göre güncelle
+      currentClinicalAssessments[testType] = testResults;
+      
+      await apiService.saveDashboardData({
+        clinicalAssessments: currentClinicalAssessments,
+      } as any);
+
+      alert('Testler başarıyla kaydedildi! ✅');
+      onClose();
+    } catch (error) {
+      console.error('Testler kaydedilirken hata:', error);
+      alert('Testler kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.');
+    }
   };
 
   return (

@@ -200,6 +200,12 @@ class ApiService {
     notifications?: any[];
     photos?: any;
     formData?: any;
+    clinicalAssessments?: any;
+    selectedPackage?: any;
+    purchases?: any[];
+    activityLog?: any[];
+    adminNotes?: string;
+    lastClinicalAssessmentDate?: string;
   }) {
     return this.request('/auth/dashboard/data', {
       method: 'PUT',

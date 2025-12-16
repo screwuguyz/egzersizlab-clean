@@ -493,6 +493,9 @@ router.put(
 
       user.dashboardData.lastLogin = new Date();
 
+      // Mixed type için Mongoose'a değişikliği bildir
+      user.markModified('dashboardData');
+      
       await user.save();
 
       res.json({

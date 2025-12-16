@@ -248,7 +248,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose, onSucces
                   En az 8 karakter, bir büyük harf, bir küçük harf ve bir rakam içermelidir
                 </p>
               </div>
-              <div className="pt-2">
+              <div className="pt-2 space-y-3">
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" required className="checkbox-custom mt-1" />
                   <span className="text-sm text-gray-600 leading-relaxed">
@@ -260,6 +260,17 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ onClose, onSucces
                     Aydınlatma Metni
                   </button>
                     'ni okudum, kabul ediyorum.
+                  </span>
+                </label>
+                
+                {/* Sağlık Verisi Özel Rızası */}
+                <label className="flex items-start gap-3 cursor-pointer bg-purple-50 p-3 rounded-lg border border-purple-200">
+                  <input type="checkbox" required className="checkbox-custom mt-1" />
+                  <span className="text-sm text-gray-700 leading-relaxed">
+                    <strong className="text-purple-700">🏥 Sağlık Verisi Açık Rızası:</strong> Öz-değerlendirme testleri, 
+                    fotoğraf ve video kayıtlarımın işlenmesine, saklanmasına ve analiz edilmesine açık rızam ile onay veriyorum. 
+                    Bu verilerin sadece kişisel egzersiz programım için kullanılacağını ve istediğim zaman 
+                    silinmesini talep edebileceğimi biliyorum.
                   </span>
                 </label>
               </div>

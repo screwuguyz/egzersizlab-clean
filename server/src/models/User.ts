@@ -19,6 +19,9 @@ export interface IUser extends Document {
     photos?: any;
     formData?: any;
     clinicalAssessments?: any; // Klinik test assessment'ları
+    selectedPackage?: any; // Seçilen paket bilgisi
+    purchases?: any[]; // Satın alma geçmişi
+    activityLog?: any[]; // Aktivite geçmişi
     lastLogin?: Date;
     lastAssessmentDate?: Date; // Son assessment tarihi
     lastClinicalAssessmentDate?: Date; // Son klinik test tarihi
@@ -72,18 +75,7 @@ const userSchema = new Schema<IUser>(
       type: Date,
     },
     dashboardData: {
-      type: {
-        assessmentResults: Schema.Types.Mixed,
-        exercisePrograms: [Schema.Types.Mixed],
-        progressData: Schema.Types.Mixed,
-        notifications: [Schema.Types.Mixed],
-        photos: Schema.Types.Mixed,
-        formData: Schema.Types.Mixed,
-        clinicalAssessments: Schema.Types.Mixed, // Klinik test assessment'ları
-        lastLogin: Date,
-        lastAssessmentDate: Date, // Son assessment tarihi
-        lastClinicalAssessmentDate: Date, // Son klinik test tarihi
-      },
+      type: Schema.Types.Mixed, // Esnek yapı için Mixed type kullan
       default: {},
     },
   },

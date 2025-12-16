@@ -91,6 +91,7 @@ const Dashboard: React.FC = () => {
   const [showCart, setShowCart] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
+  const [activeProgram, setActiveProgram] = useState<any>(null);
   
   // Kullanıcının ağrılı bölgelerini localStorage'dan oku
   const [userPainAreas, setUserPainAreas] = useState<string[]>(() => {
@@ -384,11 +385,11 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
-  // Kullanıcı bilgilerini ve dashboard verilerini backend'den çek
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Kullanıcı bilgilerini getir
+  // Dashboard verilerini güncelleyen fonksiyon
+  const refreshDashboardData = async (isInitial = false) => {
+    try {
+      // Kullanıcı bilgilerini getir (sadece ilk yüklemede)
+      if (isInitial) {
         const response = await apiService.getCurrentUser();
         if (response.success && (response as any).user) {
           const user = (response as any).user;
@@ -405,39 +406,54 @@ const Dashboard: React.FC = () => {
             localStorage.setItem('packageType', user.packageType);
           }
         }
-
-        // Dashboard verilerini getir
-        const dashboardResponse = await apiService.getDashboardData();
-        if (dashboardResponse.success && dashboardResponse.data) {
-          const dashboardData = dashboardResponse.data;
-          
-          // Assessment sonuçlarını yükle
-          if (dashboardData.assessmentResults) {
-            console.log('Assessment sonuçları yüklendi:', dashboardData.assessmentResults);
-          }
-          
-          // Fotoğrafları yükle
-          if (dashboardData.photos) {
-            console.log('Fotoğraflar yüklendi:', dashboardData.photos);
-          }
-          
-          // Form verilerini yükle
-          if (dashboardData.formData) {
-            console.log('Form verileri yüklendi:', dashboardData.formData);
-          }
-          
-          // Bildirimleri yükle
-          if (dashboardData.notifications && Array.isArray(dashboardData.notifications)) {
-            setNotifications(dashboardData.notifications);
-          }
-        }
-      } catch (error) {
-        console.error('Kullanıcı verileri yüklenirken hata:', error);
-        // Hata durumunda varsayılan ismi kullan
       }
-    };
 
-    fetchUserData();
+      // Dashboard verilerini getir
+      const dashboardResponse = await apiService.getDashboardData();
+      
+      if (dashboardResponse.success && dashboardResponse.data) {
+        const dashboardData = dashboardResponse.data as any;
+        
+        // Paket tipini güncelle
+        if (dashboardData.selectedPackage?.type) {
+          setPackageType(dashboardData.selectedPackage.type);
+          localStorage.setItem('packageType', dashboardData.selectedPackage.type);
+        }
+        
+        // Bildirimleri yükle - görülmüş olanları tamamen filtrele
+        if (dashboardData.notifications && Array.isArray(dashboardData.notifications)) {
+          const seenNotifications = JSON.parse(localStorage.getItem('seenNotifications') || '[]');
+          // Görülmüş bildirimleri tamamen çıkar
+          const newNotifications = dashboardData.notifications.filter(
+            (n: any) => !seenNotifications.includes(n.id)
+          );
+          setNotifications(newNotifications);
+        }
+        
+        // Egzersiz programlarını yükle
+        if (dashboardData.exercisePrograms && Array.isArray(dashboardData.exercisePrograms)) {
+          const program = dashboardData.exercisePrograms.find((p: any) => p.status === 'active');
+          setActiveProgram(program || null);
+        } else {
+          setActiveProgram(null);
+        }
+      }
+    } catch (error) {
+      console.error('Dashboard verileri yüklenirken hata:', error);
+    }
+  };
+
+  // İlk yükleme ve otomatik güncelleme (polling)
+  useEffect(() => {
+    // İlk yükleme
+    refreshDashboardData(true);
+    
+    // Her 10 saniyede bir güncelle (admin paneldeki değişiklikler için)
+    const pollingInterval = setInterval(() => {
+      refreshDashboardData(false);
+    }, 10000); // 10 saniye
+    
+    return () => clearInterval(pollingInterval);
   }, []);
 
   const gradientBackground = useMemo(
@@ -495,9 +511,15 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const handleNotificationClick = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+    // Bildirimi listeden kaldır
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    
+    // LocalStorage'a kaydet - tekrar gösterilmesin
+    const seenNotifications = JSON.parse(localStorage.getItem('seenNotifications') || '[]');
+    if (!seenNotifications.includes(id)) {
+      seenNotifications.push(id);
+      localStorage.setItem('seenNotifications', JSON.stringify(seenNotifications));
+    }
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -1410,7 +1432,12 @@ const Dashboard: React.FC = () => {
                     </div>
                     {notifications.length > 0 && (
                       <div className="notification-footer">
-                        <button className="notification-footer-btn">Tümünü Gör</button>
+                        <button 
+                          className="notification-footer-btn"
+                          onClick={() => setShowNotifications(false)}
+                        >
+                          Tümünü Gör
+                        </button>
                     </div>
                   )}
                 </div>
@@ -1647,7 +1674,48 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* İstatistik Kartları */}
+              {/* Program atanmadan önce hazırlanıyor mesajı */}
+              {packageType !== 'none' && !activeProgram && (
+                <div style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '20px',
+                  padding: '40px',
+                  textAlign: 'center',
+                  color: 'white',
+                  marginBottom: '24px',
+                  boxShadow: '0 10px 40px rgba(102, 126, 234, 0.3)'
+                }}>
+                  <div style={{ fontSize: '64px', marginBottom: '20px' }}>⏳</div>
+                  <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '12px' }}>
+                    Egzersiz Programınız Hazırlanıyor
+                  </h2>
+                  <p style={{ fontSize: '16px', opacity: 0.9, marginBottom: '8px' }}>
+                    Uzman ekibimiz sizin için kişiselleştirilmiş bir program oluşturuyor.
+                  </p>
+                  <p style={{ fontSize: '14px', opacity: 0.8 }}>
+                    Maksimum <strong>1 iş günü</strong> içinde programınız hazır olacak!
+                  </p>
+                  <div style={{
+                    marginTop: '24px',
+                    padding: '16px',
+                    background: 'rgba(255,255,255,0.15)',
+                    borderRadius: '12px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <span style={{ fontSize: '24px' }}>💡</span>
+                    <span style={{ fontSize: '13px', textAlign: 'left' }}>
+                      Bu süreçte öz-değerlendirme testlerini tamamlayarak<br/>
+                      programınızın daha etkili olmasına katkı sağlayabilirsiniz.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* İstatistik Kartları - Sadece program varsa göster */}
+              {activeProgram && (
+              <>
               <div className="stats-grid">
                 <div className="stat-card">
                   <div className="stat-icon" style={{ background: 'linear-gradient(135deg, #667eea, #764ba2)' }}>📊</div>
@@ -1696,66 +1764,98 @@ const Dashboard: React.FC = () => {
                   </div>
                 </button>
               </div>
+              </>
+              )}
 
               {/* Ana İçerik Grid */}
               <div className="dashboard-grid">
                 {/* Sol Kolon */}
                 <div className="dashboard-left">
-                  {/* Bugünkü Görevler */}
-                  <div className="task-card">
-                    <div className="card-header">
-                      <h3 className="card-title">📅 Bugünkü Görevler</h3>
-                      <span className="card-badge">{todayTasks.filter(t => t.completed).length}/{todayTasks.length}</span>
+                  {/* Program yoksa - Hazırlanıyor kartı, varsa görevler */}
+                  {packageType !== 'none' && !activeProgram ? (
+                    <div className="task-card" style={{ textAlign: 'center', padding: '40px 20px' }}>
+                      <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎯</div>
+                      <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#1f2937', marginBottom: '8px' }}>
+                        Öz-Değerlendirme Testleri
+                      </h3>
+                      <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>
+                        Programınız hazırlanırken testleri tamamlayın
+                      </p>
+                      <button 
+                        onClick={() => setClinicalTestType('muscle-strength')}
+                        style={{
+                          background: 'linear-gradient(135deg, #10b981, #059669)',
+                          color: 'white',
+                          border: 'none',
+                          padding: '12px 24px',
+                          borderRadius: '10px',
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Testlere Başla →
+                      </button>
                     </div>
-                    <div className="task-list">
-                      {todayTasks.map((task) => (
-                        <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
-                          <div className="task-checkbox" onClick={() => toggleTask(task.id)}>
-                            {task.completed ? '✅' : '⭕'}
-                          </div>
-                          <div className="task-info">
-                            <div className="task-name">{task.name}</div>
-                            <div className="task-meta">
-                              <span className="task-duration">⏱️ {task.duration}</span>
-                              <span className="task-time">🕐 {task.time}</span>
+                  ) : (
+                    <>
+                      {/* Bugünkü Görevler */}
+                      <div className="task-card">
+                        <div className="card-header">
+                          <h3 className="card-title">📅 Bugünkü Görevler</h3>
+                          <span className="card-badge">{todayTasks.filter(t => t.completed).length}/{todayTasks.length}</span>
+                        </div>
+                        <div className="task-list">
+                          {todayTasks.map((task) => (
+                            <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
+                              <div className="task-checkbox" onClick={() => toggleTask(task.id)}>
+                                {task.completed ? '✅' : '⭕'}
+                              </div>
+                              <div className="task-info">
+                                <div className="task-name">{task.name}</div>
+                                <div className="task-meta">
+                                  <span className="task-duration">⏱️ {task.duration}</span>
+                                  <span className="task-time">🕐 {task.time}</span>
+                                </div>
+                              </div>
                             </div>
+                          ))}
+                        </div>
+                        <button className="task-view-all" onClick={() => setShowExerciseProgram(true)}>
+                          Tüm Programı Gör →
+                        </button>
+                      </div>
+
+                      {/* İlerleme Grafiği */}
+                      <div className="progress-chart-card">
+                        <div className="card-header">
+                          <h3 className="card-title">📈 Haftalık İlerleme</h3>
+                        </div>
+                        <div className="chart-container">
+                          <div className="chart-bars">
+                            {progressData.map((item, idx) => (
+                              <div key={idx} className="chart-bar-wrapper">
+                                <div className="chart-bar" style={{ height: `${item.value}%` }}>
+                                  <span className="chart-value">{item.value}%</span>
+                                </div>
+                                <div className="chart-label">{item.day}</div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                    <button className="task-view-all" onClick={() => setShowExerciseProgram(true)}>
-                      Tüm Programı Gör →
-                    </button>
-                  </div>
-
-                  {/* İlerleme Grafiği */}
-                  <div className="progress-chart-card">
-                    <div className="card-header">
-                      <h3 className="card-title">📈 Haftalık İlerleme</h3>
-                    </div>
-                    <div className="chart-container">
-                      <div className="chart-bars">
-                        {progressData.map((item, idx) => (
-                          <div key={idx} className="chart-bar-wrapper">
-                            <div className="chart-bar" style={{ height: `${item.value}%` }}>
-                              <span className="chart-value">{item.value}%</span>
-                            </div>
-                            <div className="chart-label">{item.day}</div>
+                        <div className="chart-footer">
+                          <div className="chart-stat">
+                            <span className="chart-stat-label">Ortalama:</span>
+                            <span className="chart-stat-value">{Math.round(progressData.reduce((a, b) => a + b.value, 0) / progressData.length)}%</span>
                           </div>
-                        ))}
+                          <div className="chart-stat">
+                            <span className="chart-stat-label">En Yüksek:</span>
+                            <span className="chart-stat-value">{Math.max(...progressData.map(d => d.value))}%</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="chart-footer">
-                      <div className="chart-stat">
-                        <span className="chart-stat-label">Ortalama:</span>
-                        <span className="chart-stat-value">{Math.round(progressData.reduce((a, b) => a + b.value, 0) / progressData.length)}%</span>
-                      </div>
-                      <div className="chart-stat">
-                        <span className="chart-stat-label">En Yüksek:</span>
-                        <span className="chart-stat-value">{Math.max(...progressData.map(d => d.value))}%</span>
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Sağ Kolon */}
@@ -1798,7 +1898,8 @@ const Dashboard: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Son Aktiviteler */}
+                  {/* Son Aktiviteler - Sadece program varsa göster */}
+                  {activeProgram && (
                   <div className="activities-card">
                     <div className="card-header">
                       <h3 className="card-title">🕐 Son Aktiviteler</h3>
@@ -1818,6 +1919,7 @@ const Dashboard: React.FC = () => {
                       Tüm Aktiviteleri Gör →
                     </button>
                   </div>
+                  )}
 
                 </div>
               </div>
