@@ -20,6 +20,9 @@ dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
+// Railway gibi proxy arkasında çalışırken gerekli
+app.set('trust proxy', 1);
+
 // Güvenlik: Middleware'ler (sıra önemli!)
 app.use(helmetConfig); // Güvenlik headers
 app.use(securityHeaders); // Ek güvenlik headers
