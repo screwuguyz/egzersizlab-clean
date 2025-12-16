@@ -30,7 +30,11 @@ interface Stats {
   newUsersLastMonth: number;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Production URL - Hostinger'da çalışırken Railway backend'i kullan
+const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+const API_BASE_URL = isProduction 
+  ? 'https://egzersizlab-clean-production.up.railway.app/api'
+  : 'http://localhost:5000/api';
 
 const AdminPanel: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

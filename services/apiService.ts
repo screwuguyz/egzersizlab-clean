@@ -2,7 +2,11 @@
  * API Service Layer - Frontend'den backend'e güvenli bağlantı
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Production URL - Hostinger'da çalışırken Railway backend'i kullan
+const isProduction = window.location.hostname !== 'localhost';
+const API_BASE_URL = isProduction 
+  ? 'https://egzersizlab-clean-production.up.railway.app/api'
+  : 'http://localhost:5000/api';
 
 interface ApiResponse<T> {
   success: boolean;
